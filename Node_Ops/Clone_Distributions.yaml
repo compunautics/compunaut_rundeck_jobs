@@ -1,0 +1,56 @@
+- defaultTab: output
+  description: |-
+    Use this job to clone raspberry pi distributions in piserver.
+    - This job is used to prepare new raspberry pi "images" for provisioning.
+    - This job requires that the compunaut-raspi distro is installed in piserver.
+    - This job will use the image_name you specify as the hostname for the new pi.
+  executionEnabled: true
+  group: Netboot
+  id: 051a0002-4cf1-43c7-9616-1f6663d5f231
+  loglevel: INFO
+  name: Clone Distributions
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: .*netboot.*'
+  nodesSelectedByDefault: false
+  options:
+  - delimiter: ' '
+    description: Provide a list of hostnames for the new images that you are cloning.
+    multivalued: true
+    name: image_names
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Verify compunaut-raspi is installed in piserver
+      script: |-
+        #!/bin/bash
+
+        is_installed=$(grep "compunaut-raspi" /var/lib/piserver/installed_distros.json)
+
+        if [[ -z ${is_installed} ]]; then
+            echo "compunaut-raspi is not installed!"
+            exit 1
+        else
+            echo "compunaut-raspi is installed!"
+        fi
+    - description: Clone distro and create new images
+      script: |-
+        #!/bin/bash
+
+        image_list="@option.image_names@"
+
+        for image in ${image_list}; do
+            echo "Cloning ${image}..."
+            sudo /var/lib/piserver/scripts/clone_distro.py -d ${image}
+            echo "Done!"
+        done
+    keepgoing: false
+    strategy: node-first
+  timeout: '600'
+  uuid: 051a0002-4cf1-43c7-9616-1f6663d5f231
