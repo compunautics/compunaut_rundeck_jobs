@@ -1,0 +1,26 @@
+- defaultTab: monitor
+  description: Use this job to run a general software update.
+  executionEnabled: true
+  group: Linux
+  id: 074a7475-8b78-42f3-8d2c-2da2c030ef79
+  loglevel: INFO
+  name: Update Software
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '8'
+    filter: .*
+  nodesSelectedByDefault: false
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Update Software
+      exec: sudo apt-get update && sudo apt-get dist-upgrade -y
+    keepgoing: false
+    strategy: node-first
+  timeout: '6000'
+  uuid: 074a7475-8b78-42f3-8d2c-2da2c030ef79
