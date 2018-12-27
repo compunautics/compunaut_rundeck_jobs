@@ -1,0 +1,33 @@
+- defaultTab: monitor
+  description: |-
+    Use this job to apply a salt state.
+    - You can leave the 'state' option empty, and salt will apply the highstate.
+  executionEnabled: true
+  group: Saltstack
+  id: 836d4ade-1207-464d-8c19-52a913e25aae
+  loglevel: INFO
+  name: Run Salt
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '8'
+    filter: .*
+  nodesSelectedByDefault: false
+  options:
+  - description: |-
+      Input the state to be applied. Leave this empty if you want to apply the highstate.
+      - You can put in multiple states, delimited by commas (,)
+    name: State
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Apply State
+      exec: sudo salt-call state.apply ${option.State} --state_output=mixed
+    keepgoing: false
+    strategy: node-first
+  timeout: '6000'
+  uuid: 836d4ade-1207-464d-8c19-52a913e25aae
