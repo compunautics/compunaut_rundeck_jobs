@@ -1,14 +1,14 @@
 - defaultTab: output
   description: |-
-    Use this job to clone raspberry pi distributions in piserver.
-    - This job is used to prepare new raspberry pi "images" for provisioning.
-    - This job requires that the compunaut-raspi distro is installed in piserver.
+    Use this job to provision new raspberry pi images in piserver.
+    - This job is used to clone new raspberry pi "images" from the compunaut-raspi distro.
+    - This job requires that the compunaut-raspi distro is already installed in piserver.
     - This job will use the image_name you specify as the hostname for the new pi.
   executionEnabled: true
   group: Netboot
   id: 051a0002-4cf1-43c7-9616-1f6663d5f231
   loglevel: INFO
-  name: Clone Distributions
+  name: Provision Pi Images
   nodeFilterEditable: false
   nodefilters:
     dispatch:
@@ -21,7 +21,7 @@
   nodesSelectedByDefault: false
   options:
   - delimiter: ' '
-    description: Provide a list of hostnames for the new images that you are cloning.
+    description: Provide a list of hostnames for the new images that you are provisioning.
     multivalued: true
     name: image_names
   scheduleEnabled: true
