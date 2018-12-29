@@ -2,14 +2,14 @@
   description: Use this job to run a general software update.
   executionEnabled: true
   group: Linux
-  id: 074a7475-8b78-42f3-8d2c-2da2c030ef79
+  id: a5a61abd-aa88-43ba-b81c-694243cda605
   loglevel: INFO
   name: Update Software
   nodeFilterEditable: false
   nodefilters:
     dispatch:
       excludePrecedence: true
-      keepgoing: false
+      keepgoing: true
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '8'
@@ -23,4 +23,4 @@
     keepgoing: false
     strategy: node-first
   timeout: '6000'
-  uuid: 074a7475-8b78-42f3-8d2c-2da2c030ef79
+  uuid: a5a61abd-aa88-43ba-b81c-694243cda605
