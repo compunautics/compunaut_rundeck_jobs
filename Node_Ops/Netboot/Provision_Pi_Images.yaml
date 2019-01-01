@@ -6,7 +6,7 @@
     - This job will use the image_name you specify as the hostname for the new pi.
   executionEnabled: true
   group: Netboot
-  id: 051a0002-4cf1-43c7-9616-1f6663d5f231
+  id: 77940971-aff3-4702-aaff-98b7e5c259f6
   loglevel: INFO
   name: Provision Pi Images
   nodeFilterEditable: false
@@ -21,9 +21,13 @@
   nodesSelectedByDefault: false
   options:
   - delimiter: ' '
-    description: Provide a list of hostnames for the new images that you are provisioning.
+    description: |-
+      Provide a list of hostnames for the new images that you are provisioning.
+      - The hostnames must include 'prtr'
     multivalued: true
     name: image_names
+    regex: .*prtr.*
+    value: .*-prtr.domain.name
   scheduleEnabled: true
   sequence:
     commands:
