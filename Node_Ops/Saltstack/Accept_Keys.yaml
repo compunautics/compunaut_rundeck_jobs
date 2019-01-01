@@ -1,0 +1,28 @@
+- defaultTab: output
+  description: Use this job to accept new saltstack minion keys.
+  executionEnabled: true
+  group: Saltstack
+  id: fb741bb1-27cf-4b96-ab9c-d1f24bbd664d
+  loglevel: INFO
+  name: Accept Keys
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: .*salt.*'
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: List all keys
+      exec: sudo salt-key -L
+    - description: Accept all keys
+      exec: sudo salt-key -A -y
+    keepgoing: false
+    strategy: node-first
+  timeout: '300'
+  uuid: fb741bb1-27cf-4b96-ab9c-d1f24bbd664d
