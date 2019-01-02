@@ -1,10 +1,10 @@
 - defaultTab: output
-  description: Use this job to accept new saltstack minion keys.
+  description: Use this job to delete saltstack minion keys.
   executionEnabled: true
   group: Saltstack
-  id: fc3aa882-ed4e-4e0a-a017-4f1bad62f11d
+  id: 19a6a48e-adfa-4023-a33c-de3d8fb418ee
   loglevel: INFO
-  name: Accept Keys
+  name: Delete Keys
   nodeFilterEditable: false
   nodefilters:
     dispatch:
@@ -16,8 +16,8 @@
     filter: 'name: .*salt.*'
   nodesSelectedByDefault: true
   options:
-  - description: Specify the keys to accept in glob format.
-    name: key_to_accept
+  - description: Specify the keys to delete in glob format.
+    name: key_to_delete
     required: true
     value: '*'
   scheduleEnabled: true
@@ -26,7 +26,7 @@
     - description: List all keys
       exec: sudo salt-key -L
     - description: Accept all keys
-      exec: sudo salt-key -a "${option.key_to_accept}" -y
+      exec: sudo salt-key -d "${option.key_to_delete}" -y
     keepgoing: false
     strategy: node-first
   timeout: '300'

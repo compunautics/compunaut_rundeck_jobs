@@ -6,9 +6,9 @@
     - This job will use the image_name you specify as the hostname for the new pi.
   executionEnabled: true
   group: Netboot
-  id: 77940971-aff3-4702-aaff-98b7e5c259f6
+  id: d44e3e4b-1c85-4011-8ef2-fa39378e5dd1
   loglevel: INFO
-  name: Provision Pi Images
+  name: Provision Printer Images
   nodeFilterEditable: false
   nodefilters:
     dispatch:

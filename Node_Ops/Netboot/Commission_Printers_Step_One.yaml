@@ -1,0 +1,55 @@
+- defaultTab: monitor
+  description: |-
+    Use this job to install printer software on netbooted raspberry pis.
+    - This job should be run first when commissioning new printers.
+  executionEnabled: true
+  group: Netboot
+  id: cd220ba4-d343-475f-b1f8-2d5a8c2bab07
+  loglevel: INFO
+  name: Commission Printers Step One
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: .*salt.*'
+  nodesSelectedByDefault: true
+  options:
+  - description: |-
+      Set a salt target.
+      - If left blank, all pis will be targeted.
+    name: node_to_commission
+    regex: .*prtr.*
+    required: true
+    value: '*prtr*'
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Accept keys
+      exec: sudo salt-key -a "${option.node_to_commission}" -y
+    - description: Wait 30 seconds, and test ping the new minions
+      exec: sleep 30 && sudo salt "${option.node_to_commission}" test.ping
+    - description: Apply compunaut_salt state on printers
+      exec: sudo salt "${option.node_to_commission}" state.apply compunaut_salt --state_output=mixed -b8 --batch-wait 15
+    - description: Wait 45 seconds, and test ping the new minions
+      exec: sleep 45 && sudo salt "${option.node_to_commission}" test.ping
+    - description: Apply compunaut_default state on printers
+      exec: sudo salt "${option.node_to_commission}" state.apply compunaut_default --state_output=mixed -b5 --batch-wait 15
+    - description: Refresh grains
+      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" saltutil.refresh_grains -b5 --batch-wait 15 && sleep 10
+    - description: Update mine
+      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" mine.update -b5 --batch-wait 15 && sleep 10
+    - description: Refresh Pillar
+      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" saltutil.refresh_pillar -b5 --batch-wait 15 && sleep 10
+    - description: Sync all salt modules
+      exec: sudo salt "${option.node_to_commission}" saltutil.sync_all -b5 --batch-wait 15
+    - description: Create certificates on salt master
+      exec: sudo salt "*salt*" state.apply compunaut_openvpn --state_output=mixed
+    - description: Deploy static IPs on vpn servers
+      exec: sudo salt "*vpn*" state.apply openvpn.config --state_output=mixed
+    keepgoing: false
+    strategy: node-first
+  timeout: '3600'

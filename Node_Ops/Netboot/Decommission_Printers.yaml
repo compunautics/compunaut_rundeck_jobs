@@ -1,0 +1,50 @@
+- defaultTab: monitor
+  description: Use this job to decommission printers from saltstack, consul, and influxdb.
+  executionEnabled: true
+  group: Netboot
+  id: 0e445156-c9e2-4655-a644-fe4d752d6c00
+  loglevel: INFO
+  name: Decommission Printers
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: .*salt.*'
+  nodesSelectedByDefault: true
+  options:
+  - description: Specify the name of the printer that you would like to decommission.
+    name: node_to_decommission
+    regex: .*-prtr.*
+    required: true
+    value: .*-prtr.domain.name
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Delete node key
+      jobref:
+        args: -key_to_delete ${option.node_to_decommission}
+        group: Saltstack
+        name: Delete Keys
+        nodeStep: 'true'
+        uuid: 19a6a48e-adfa-4023-a33c-de3d8fb418ee
+    - description: Delete node from Consul
+      jobref:
+        args: -node_to_remove ${option.node_to_decommission}
+        group: Linux
+        name: Decommission node from Consul
+        nodeStep: 'true'
+        uuid: 17512773-db8b-4a3f-ad9d-f372041c01ed
+    - description: Delete node from Influxdb
+      jobref:
+        args: -node_to_remove ${option.node_to_decommission}
+        group: Linux
+        name: Decommission node from Influxdb
+        nodeStep: 'true'
+        uuid: 98ad2f8c-58d3-4f7a-8b35-edfb4e36f223
+    keepgoing: false
+    strategy: node-first
+  timeout: '300'

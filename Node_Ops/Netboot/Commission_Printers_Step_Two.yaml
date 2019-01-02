@@ -1,0 +1,47 @@
+- defaultTab: monitor
+  description: |-
+    Use this job to install printer software on netbooted raspberry pis.
+    - This job should be run second when commissioning new printers.
+  executionEnabled: true
+  group: Netboot
+  id: 60adcaee-8b2d-4b33-8137-4febb6abde5a
+  loglevel: INFO
+  name: Commission Printers Step Two
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: .*salt.*'
+  nodesSelectedByDefault: true
+  options:
+  - description: |-
+      Set a salt target.
+      - If left blank, all pis will be targeted.
+    name: node_to_commission
+    regex: .*prtr.*
+    required: true
+    value: '*prtr*'
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Apply compunaut_openvpn state on printers
+      exec: sudo salt "${option.node_to_commission}" state.apply compunaut_openvpn --state_output=mixed -b5 --batch-wait 15
+    - description: Refresh grains
+      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" saltutil.refresh_grains -b5 --batch-wait 15 && sleep 10
+    - description: Update mine
+      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" mine.update -b5 --batch-wait 15 && sleep 10
+    - description: Refresh Pillar
+      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" saltutil.refresh_pillar -b5 --batch-wait 15 && sleep 10
+    - description: Install dnsmasq and consul
+      exec: sudo salt "${option.node_to_commission}" state.apply compunaut_dnsmasq,compunaut_consul --state_output=mixed -b5 --batch-wait 15 && sleep 10
+    - description: Apply highstate on printers
+      exec: sudo salt "${option.node_to_commission}" state.highstate --state_output=mixed -b5 --batch-wait 15
+    - description: Apply highstate on vpn servers
+      exec: sudo salt "*vpn*" state.highstate --state_output=mixed -b5 --batch-wait 15
+    keepgoing: false
+    strategy: node-first
+  timeout: '3600'

@@ -1,0 +1,32 @@
+- defaultTab: monitor
+  description: |-
+    Use this job to decommission a node from Consul.
+    - This job will execute on all consul servers, removing the specified node from consul's awareness.
+  executionEnabled: true
+  group: Linux
+  id: 17512773-db8b-4a3f-ad9d-f372041c01ed
+  loglevel: INFO
+  name: Decommission node from Consul
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '3'
+    filter: 'name: .*consul.*'
+  nodesSelectedByDefault: true
+  options:
+  - description: Specify the name of the node to be removed from consul.
+    name: node_to_remove
+    required: true
+    value: node.domain.name
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Delete the node from influxdb
+      exec: sudo consul force-leave ${option.node_to_remove}
+    keepgoing: false
+    strategy: node-first
+  timeout: '300'
