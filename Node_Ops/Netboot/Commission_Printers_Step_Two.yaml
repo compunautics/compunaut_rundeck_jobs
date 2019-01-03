@@ -38,6 +38,8 @@
       exec: sudo salt -C "*vpn* or ${option.node_to_commission}" saltutil.refresh_pillar -b5 --batch-wait 15 && sleep 10
     - description: Install dnsmasq and consul
       exec: sudo salt "${option.node_to_commission}" state.apply compunaut_dnsmasq,compunaut_consul --state_output=mixed -b5 --batch-wait 15 && sleep 10
+    - description: Apply compunaut_octoprint on printers
+      exec: sudo salt "${option.node_to_commission}" state.apply compunaut_octoprint --state_output=mixed -b5 --batch-wait 15 && sleep 10
     - description: Apply highstate on printers
       exec: sudo salt "${option.node_to_commission}" state.highstate --state_output=mixed -b5 --batch-wait 15
     - description: Apply compunaut_dnsmasq on vpn servers
