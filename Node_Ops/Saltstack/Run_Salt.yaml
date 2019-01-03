@@ -4,7 +4,6 @@
     - You can leave the 'state' option empty, and salt will apply the highstate.
   executionEnabled: true
   group: Saltstack
-  id: c5bf1971-a345-4b09-a573-595d359da781
   loglevel: INFO
   name: Run Salt
   nodeFilterEditable: false

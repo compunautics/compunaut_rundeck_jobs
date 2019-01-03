@@ -2,7 +2,6 @@
   description: Use this job to run a general software update.
   executionEnabled: true
   group: Linux
-  id: a5a61abd-aa88-43ba-b81c-694243cda605
   loglevel: INFO
   name: Update Software
   nodeFilterEditable: false

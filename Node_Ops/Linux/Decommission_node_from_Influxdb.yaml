@@ -4,7 +4,6 @@
     - This job will execute on all db servers, removing all collected node metrics for the specified node.
   executionEnabled: true
   group: Linux
-  id: 98ad2f8c-58d3-4f7a-8b35-edfb4e36f223
   loglevel: INFO
   name: Decommission node from Influxdb
   nodeFilterEditable: false

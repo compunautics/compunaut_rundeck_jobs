@@ -2,7 +2,6 @@
   description: Use this job to delete saltstack minion keys.
   executionEnabled: true
   group: Saltstack
-  id: 19a6a48e-adfa-4023-a33c-de3d8fb418ee
   loglevel: INFO
   name: Delete Keys
   nodeFilterEditable: false

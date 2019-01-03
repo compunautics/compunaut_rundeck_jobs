@@ -4,7 +4,6 @@
     - This job should be run second when commissioning new printers.
   executionEnabled: true
   group: Netboot
-  id: fd344aa8-f498-4928-829d-5e8ebc8188f4
   loglevel: INFO
   name: Commission Printers Step Two
   nodeFilterEditable: false
@@ -30,12 +29,11 @@
     commands:
     - description: Apply compunaut_openvpn state on printers
       exec: sudo salt "${option.node_to_commission}" state.apply compunaut_openvpn --state_output=mixed -b6 --batch-wait 15 && sleep 10
-    - description: Refresh grains
-      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" saltutil.refresh_grains -b6 --batch-wait 15 && sleep 10
-    - description: Update mine
-      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" mine.update -b6 --batch-wait 15 && sleep 10
-    - description: Refresh Pillar
-      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" saltutil.refresh_pillar -b6 --batch-wait 15 && sleep 10
+    - description: Update Data
+      jobref:
+        group: Saltstack
+        name: Update Data
+        nodeStep: 'true'
     - description: Apply compunaut_dnsmasq and compunaut_consul on printers
       exec: sudo salt "${option.node_to_commission}" state.apply compunaut_dnsmasq,compunaut_consul --state_output=mixed -b6 --batch-wait 15 && sleep 10
     - description: Apply compunaut_octoprint on printers

@@ -4,7 +4,6 @@
     - This job should be run first when commissioning new printers.
   executionEnabled: true
   group: Netboot
-  id: cd220ba4-d343-475f-b1f8-2d5a8c2bab07
   loglevel: INFO
   name: Commission Printers Step One
   nodeFilterEditable: false
@@ -38,12 +37,11 @@
       exec: sleep 60 && sudo salt "${option.node_to_commission}" test.ping
     - description: Apply compunaut_default on printers
       exec: sudo salt "${option.node_to_commission}" state.apply compunaut_default --state_output=mixed -b6 --batch-wait 15 && sleep 10
-    - description: Refresh grains
-      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" saltutil.refresh_grains -b6 --batch-wait 15 && sleep 10
-    - description: Update mine
-      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" mine.update -b6 --batch-wait 15 && sleep 10
-    - description: Refresh Pillar
-      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" saltutil.refresh_pillar -b6 --batch-wait 15 && sleep 10
+    - description: Update Data
+      jobref:
+        group: Saltstack
+        name: Update Data
+        nodeStep: 'true'
     - description: Sync all salt modules
       exec: sudo salt "${option.node_to_commission}" saltutil.sync_all -b6 --batch-wait 15 && sleep 10
     - description: Create certificates on salt master

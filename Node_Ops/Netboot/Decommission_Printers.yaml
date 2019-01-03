@@ -2,7 +2,6 @@
   description: Use this job to decommission printers from saltstack, consul, and influxdb.
   executionEnabled: true
   group: Netboot
-  id: 0e445156-c9e2-4655-a644-fe4d752d6c00
   loglevel: INFO
   name: Decommission Printers
   nodeFilterEditable: false
@@ -42,6 +41,15 @@
         group: Linux
         name: Decommission node from Influxdb
         nodeStep: 'true'
+    - description: Update Data
+      jobref:
+        group: Saltstack
+        name: Update Data
+        nodeStep: 'true'
+    - description: Apply compunaut_haproxy on proxy servers
+      exec: sudo salt "*proxy*" state.apply compunaut_haproxy --state_output=mixed
+    - description: Apply compunaut_dnsmasq and openvpn.config on vpn servers
+      exec: sudo salt "*vpn*" state.apply compunaut_dnsmasq,openvpn.config --state_output=mixed
     keepgoing: false
     strategy: node-first
   timeout: '300'

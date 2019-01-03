@@ -2,7 +2,6 @@
   description: Use this job to accept new saltstack minion keys.
   executionEnabled: true
   group: Saltstack
-  id: fc3aa882-ed4e-4e0a-a017-4f1bad62f11d
   loglevel: INFO
   name: Accept Keys
   nodeFilterEditable: false

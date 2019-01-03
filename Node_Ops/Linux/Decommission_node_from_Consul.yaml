@@ -4,7 +4,6 @@
     - This job will execute on all consul servers, removing the specified node from consul's awareness.
   executionEnabled: true
   group: Linux
-  id: 17512773-db8b-4a3f-ad9d-f372041c01ed
   loglevel: INFO
   name: Decommission node from Consul
   nodeFilterEditable: false

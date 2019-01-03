@@ -1,0 +1,30 @@
+- defaultTab: monitor
+  description: |-
+    Use this job to update saltstack data.
+    - This job is useful if you need to run other saltstates with updated mine, grains, or pillars.
+  executionEnabled: true
+  group: Saltstack
+  loglevel: INFO
+  name: Update Data
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: .*salt.*'
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Refresh grains
+      exec: sudo salt -C "*" saltutil.refresh_grains -b6 --batch-wait 15 && sleep 10
+    - description: Update mine
+      exec: sudo salt -C "*" mine.update -b6 --batch-wait 15 && sleep 10
+    - description: Refresh pillar
+      exec: sudo salt -C "*" saltutil.refresh_pillar -b6 --batch-wait 15 && sleep 10
+    keepgoing: false
+    strategy: node-first
+  timeout: '300'
