@@ -33,19 +33,19 @@
     - description: Wait 30 seconds, and test ping the new minions
       exec: sleep 30 && sudo salt "${option.node_to_commission}" test.ping
     - description: Apply compunaut_salt on printers
-      exec: sudo salt "${option.node_to_commission}" state.apply compunaut_salt --state_output=mixed -b8 --batch-wait 15
+      exec: sudo salt "${option.node_to_commission}" state.apply compunaut_salt --state_output=mixed -b8 --batch-wait 15 && sleep 10
     - description: Wait 60 seconds, and test ping the new minions
       exec: sleep 60 && sudo salt "${option.node_to_commission}" test.ping
     - description: Apply compunaut_default on printers
-      exec: sudo salt "${option.node_to_commission}" state.apply compunaut_default --state_output=mixed -b5 --batch-wait 15
+      exec: sudo salt "${option.node_to_commission}" state.apply compunaut_default --state_output=mixed -b6 --batch-wait 15 && sleep 10
     - description: Refresh grains
-      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" saltutil.refresh_grains -b5 --batch-wait 15 && sleep 10
+      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" saltutil.refresh_grains -b6 --batch-wait 15 && sleep 10
     - description: Update mine
-      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" mine.update -b5 --batch-wait 15 && sleep 10
+      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" mine.update -b6 --batch-wait 15 && sleep 10
     - description: Refresh Pillar
-      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" saltutil.refresh_pillar -b5 --batch-wait 15 && sleep 10
+      exec: sudo salt -C "*vpn* or ${option.node_to_commission}" saltutil.refresh_pillar -b6 --batch-wait 15 && sleep 10
     - description: Sync all salt modules
-      exec: sudo salt "${option.node_to_commission}" saltutil.sync_all -b5 --batch-wait 15
+      exec: sudo salt "${option.node_to_commission}" saltutil.sync_all -b6 --batch-wait 15 && sleep 10
     - description: Create certificates on salt master
       exec: sudo salt "*salt*" state.apply compunaut_openvpn --state_output=mixed
     - description: Deploy static IPs on vpn servers
