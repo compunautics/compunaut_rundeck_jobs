@@ -16,15 +16,20 @@
       threadcount: '1'
     filter: 'name: .*salt.*'
   nodesSelectedByDefault: true
+  options:
+  - description: Specify the targets for updating data.
+    name: salt_target
+    required: true
+    value: '*'
   scheduleEnabled: true
   sequence:
     commands:
     - description: Refresh grains
-      exec: sudo salt -C "*" saltutil.refresh_grains -b6 --batch-wait 15 && sleep 10
+      exec: sudo salt -C "${option.salt_target}" saltutil.refresh_grains -b6 --batch-wait 15 && sleep 10
     - description: Update mine
-      exec: sudo salt -C "*" mine.update -b6 --batch-wait 15 && sleep 10
+      exec: sudo salt -C "${option.salt_target}" mine.update -b6 --batch-wait 15 && sleep 10
     - description: Refresh pillar
-      exec: sudo salt -C "*" saltutil.refresh_pillar -b6 --batch-wait 15 && sleep 10
+      exec: sudo salt -C "${option.salt_target}" saltutil.refresh_pillar -b6 --batch-wait 15 && sleep 10
     keepgoing: false
     strategy: node-first
   timeout: '300'

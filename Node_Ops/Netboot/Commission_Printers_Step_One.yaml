@@ -39,6 +39,7 @@
       exec: sudo salt "${option.node_to_commission}" state.apply compunaut_default --state_output=mixed -b6 --batch-wait 15 && sleep 10
     - description: Update Data
       jobref:
+        args: -salt_target "${option.node_to_commission} or *vpn* or *proxy*"
         group: Saltstack
         name: Update Data
         nodeStep: 'true'

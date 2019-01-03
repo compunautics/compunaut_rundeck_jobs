@@ -43,6 +43,7 @@
         nodeStep: 'true'
     - description: Update Data
       jobref:
+        args: -salt_target "*vpn* or *proxy*"
         group: Saltstack
         name: Update Data
         nodeStep: 'true'
