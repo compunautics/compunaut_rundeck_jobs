@@ -30,21 +30,18 @@
         group: Saltstack
         name: Delete Keys
         nodeStep: 'true'
-        uuid: 19a6a48e-adfa-4023-a33c-de3d8fb418ee
     - description: Delete node from Consul
       jobref:
         args: -node_to_remove ${option.node_to_decommission}
         group: Linux
         name: Decommission node from Consul
         nodeStep: 'true'
-        uuid: 17512773-db8b-4a3f-ad9d-f372041c01ed
     - description: Delete node from Influxdb
       jobref:
         args: -node_to_remove ${option.node_to_decommission}
         group: Linux
         name: Decommission node from Influxdb
         nodeStep: 'true'
-        uuid: 98ad2f8c-58d3-4f7a-8b35-edfb4e36f223
     keepgoing: false
     strategy: node-first
   timeout: '300'
