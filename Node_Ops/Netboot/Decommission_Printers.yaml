@@ -19,7 +19,7 @@
     name: node_to_decommission
     regex: .*-prtr.*
     required: true
-    value: .*-prtr.domain.name
+    value: .*-prtr.internal
   scheduleEnabled: true
   sequence:
     commands:
