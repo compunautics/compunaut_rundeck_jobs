@@ -32,11 +32,11 @@
       exec: sudo salt-key -a "${option.node_to_commission}" -y
     - description: Wait 30 seconds, and test ping the new minions
       exec: sleep 30 && sudo salt "${option.node_to_commission}" test.ping
-    - description: Apply compunaut_salt state on printers
+    - description: Apply compunaut_salt on printers
       exec: sudo salt "${option.node_to_commission}" state.apply compunaut_salt --state_output=mixed -b8 --batch-wait 15
     - description: Wait 60 seconds, and test ping the new minions
       exec: sleep 60 && sudo salt "${option.node_to_commission}" test.ping
-    - description: Apply compunaut_default state on printers
+    - description: Apply compunaut_default on printers
       exec: sudo salt "${option.node_to_commission}" state.apply compunaut_default --state_output=mixed -b5 --batch-wait 15
     - description: Refresh grains
       exec: sudo salt -C "*vpn* or ${option.node_to_commission}" saltutil.refresh_grains -b5 --batch-wait 15 && sleep 10

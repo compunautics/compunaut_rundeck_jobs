@@ -36,7 +36,7 @@
       exec: sudo salt -C "*vpn* or ${option.node_to_commission}" mine.update -b5 --batch-wait 15 && sleep 10
     - description: Refresh Pillar
       exec: sudo salt -C "*vpn* or ${option.node_to_commission}" saltutil.refresh_pillar -b5 --batch-wait 15 && sleep 10
-    - description: Install dnsmasq and consul
+    - description: Apply compunaut_dnsmasq and compunaut_consul on printers
       exec: sudo salt "${option.node_to_commission}" state.apply compunaut_dnsmasq,compunaut_consul --state_output=mixed -b5 --batch-wait 15 && sleep 10
     - description: Apply compunaut_octoprint on printers
       exec: sudo salt "${option.node_to_commission}" state.apply compunaut_octoprint --state_output=mixed -b5 --batch-wait 15 && sleep 10
