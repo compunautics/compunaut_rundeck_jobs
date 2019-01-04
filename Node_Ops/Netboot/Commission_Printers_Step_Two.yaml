@@ -40,6 +40,9 @@
     - description: Apply compunaut_octoprint on printers
       exec: sudo salt "${option.node_to_commission}" state.apply compunaut_octoprint --state_output=mixed -b6 --batch-wait 15 && sleep 10
     - description: Apply highstate on printers
+      errorhandler:
+        exec: sudo salt "${option.node_to_commission}" state.highstate --state_output=mixed -b6 --batch-wait 15 && sleep 10
+        keepgoingOnSuccess: true
       exec: sudo salt "${option.node_to_commission}" state.highstate --state_output=mixed -b6 --batch-wait 15 && sleep 10
     - description: Apply compunaut_dnsmasq on vpn servers
       exec: sudo salt "*vpn*" state.apply compunaut_dnsmasq --state_output=mixed -b6 --batch-wait 15 && sleep 10
