@@ -51,9 +51,15 @@
         name: Update Data
         nodeStep: 'true'
     - description: Apply compunaut_dnsmasq on vpn servers
-      exec: sudo salt "*vpn*" state.apply compunaut_dnsmasq --state_output=mixed -b6 --batch-wait 15 && sleep 60
+      exec: sudo salt "*vpn*" state.apply compunaut_dnsmasq --state_output=mixed -b6 --batch-wait 15 && sleep 10
+    - description: Update Data
+      jobref:
+        args: -salt_target "${option.node_to_commission} or *vpn* or *proxy*"
+        group: Saltstack
+        name: Update Data
+        nodeStep: 'true'
     - description: Apply compunaut_haproxy on proxy servers
-      exec: sudo salt '*proxy*' state.apply compunaut_haproxy --state_output=mixed -b6 --batch-wait 15
+      exec: sleep 60 && sudo salt '*proxy*' state.apply compunaut_haproxy --state_output=mixed -b6 --batch-wait 15
     keepgoing: false
     strategy: node-first
   timeout: '3600'
