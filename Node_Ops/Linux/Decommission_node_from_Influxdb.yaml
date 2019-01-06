@@ -17,7 +17,9 @@
     filter: 'name: .*db.*'
   nodesSelectedByDefault: true
   options:
-  - description: Specify the name of the node to be removed from influxdb.
+  - delimiter: ' '
+    description: Specify the name of the node to be removed from influxdb.
+    multivalued: true
     name: node_to_remove
     required: true
     value: node.domain.name
@@ -25,7 +27,17 @@
   sequence:
     commands:
     - description: Delete the node from influxdb
-      exec: sudo influx --database=compunaut_telegraf -execute "drop series where host='${option.node_to_remove}'"
+      script: |-
+        #!/bin/bash
+
+        node_list="@option.node_to_remove@"
+
+        for node in ${node_list}; do
+            echo "Deleting node ${node}..."
+            sudo influx --database=compunaut_telegraf -execute "drop series where host='${node}'"
+        done
+    - description: Restart influxd after deleting node
+      exec: sudo systemctl restart influxd
     keepgoing: false
     strategy: node-first
   timeout: '300'

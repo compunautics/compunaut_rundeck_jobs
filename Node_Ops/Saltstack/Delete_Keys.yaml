@@ -15,7 +15,9 @@
     filter: 'name: .*salt.*'
   nodesSelectedByDefault: true
   options:
-  - description: Specify the keys to delete in glob format.
+  - delimiter: ' '
+    description: Specify the keys to delete in glob format.
+    multivalued: true
     name: key_to_delete
     required: true
     value: '*'
@@ -24,8 +26,9 @@
     commands:
     - description: List all keys
       exec: sudo salt-key -L
-    - description: Accept all keys
-      exec: sudo salt-key -d "${option.key_to_delete}" -y
+    - description: Delete key
+      script: "#!/bin/bash\n\nkey_list=\"@option.key_to_delete@\"\n\nfor key in ${key_list};\
+        \ do \n    sudo salt-key -d \"${key}\" -y\ndone"
     keepgoing: false
     strategy: node-first
   timeout: '300'

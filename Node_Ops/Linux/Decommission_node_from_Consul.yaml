@@ -17,15 +17,25 @@
     filter: 'name: .*consul.*'
   nodesSelectedByDefault: true
   options:
-  - description: Specify the name of the node to be removed from consul.
+  - delimiter: ' '
+    description: Specify the name of the node to be removed from consul.
+    multivalued: true
     name: node_to_remove
     required: true
     value: node.domain.name
   scheduleEnabled: true
   sequence:
     commands:
-    - description: Delete the node from influxdb
-      exec: sudo consul force-leave ${option.node_to_remove}
+    - description: Delete the node from consul
+      script: |-
+        #!/bin/bash
+
+        node_list="@option.node_to_remove@"
+
+        for node in ${node_list}; do
+            echo "Deleting node ${node}..."
+            sudo consul force-leave ${node}
+        done
     keepgoing: false
     strategy: node-first
   timeout: '300'

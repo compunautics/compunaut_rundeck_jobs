@@ -15,7 +15,9 @@
     filter: 'name: .*salt.*'
   nodesSelectedByDefault: true
   options:
-  - description: Specify the name of the printer that you would like to decommission.
+  - delimiter: ' '
+    description: Specify the name of the printer that you would like to decommission.
+    multivalued: true
     name: node_to_decommission
     regex: .*-prtr.*
     required: true
