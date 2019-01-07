@@ -1,0 +1,82 @@
+- defaultTab: summary
+  description: |-
+    Use this job to promote an Octoprint LDAP user to admin.
+    - Only users that have logged into Octoprint in the past may be promoted.
+    - The changes require a restart to Octoprint to take effect.
+  executionEnabled: true
+  group: Octoprint
+  loglevel: INFO
+  name: Promote Octoprint User
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '8'
+    filter: 'name: .*prtr.*'
+  nodesSelectedByDefault: false
+  options:
+  - delimiter: ' '
+    description: Write in the user to promote.
+    multivalued: true
+    name: username
+    required: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Check to see if users.yaml exists
+      exec: sudo ls /opt/octoprint/.octoprint/users.yaml
+    - description: Verify user is present
+      interpreterArgsQuoted: false
+      script: |-
+        #!/bin/bash
+
+        user_list="@option.username@"
+
+        for user in ${user_list}; do
+            user_present=$(sudo grep -i ${user} /opt/octoprint/.octoprint/users.yaml)
+            if [[ -z ${user_present} ]]; then
+                echo "User ${user} is not present! Exiting for this node!"
+                exit 1
+            fi
+        done
+      scriptInterpreter: sudo /bin/bash <
+    - description: Promote user to admin
+      interpreterArgsQuoted: false
+      script: |-
+        #!/usr/bin/python
+        ### IMPORT MODULES
+        import sys
+        import ruamel.yaml
+
+        ### SET VARS
+        yaml = ruamel.yaml.YAML()
+        raw_user_list = "@option.username@"
+        split_user_list = raw_user_list.split(" ")
+        user_file = "/opt/octoprint/.octoprint/users.yaml"
+
+        ### PROMOTE USERS
+        for user in split_user_list:
+            with open(user_file, "r") as infile:
+                data = yaml.load(infile)
+            for user_entry, args in data.iteritems():
+                if user_entry == user:
+                    args['roles'] = ['user', 'admin']
+                with open(user_file, "w") as outfile:
+                    yaml.dump(data, outfile)
+      scriptInterpreter: sudo /usr/bin/python <
+    - description: Restart octoprint after user modification
+      jobref:
+        group: Octoprint
+        name: Restart Octoprint
+        nodeStep: 'true'
+        nodefilters:
+          dispatch:
+            nodeIntersect: true
+        uuid: 3c504d3d-e7cc-4880-a312-3f25795e11cb
+    keepgoing: false
+    strategy: node-first
+  timeout: '300'
+

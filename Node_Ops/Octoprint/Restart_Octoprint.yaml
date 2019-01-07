@@ -1,0 +1,25 @@
+- defaultTab: summary
+  description: Use this job to restart octoprint.
+  executionEnabled: true
+  group: Octoprint
+  loglevel: INFO
+  name: Restart Octoprint
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '8'
+    filter: 'name: .*prtr.*'
+  nodesSelectedByDefault: false
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Restart octoprint
+      exec: sudo systemctl restart octoprint
+    keepgoing: false
+    strategy: node-first
+  timeout: '300'
+
