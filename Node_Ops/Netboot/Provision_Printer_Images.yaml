@@ -25,8 +25,8 @@
       - The hostnames must include 'prtr'
     multivalued: true
     name: image_names
-    regex: .*-prtr.*
-    value: .*-prtr.internal
+    regex: .*\.prtr
+    value: printer.domain.prtr
   scheduleEnabled: true
   sequence:
     commands:

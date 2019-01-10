@@ -19,9 +19,9 @@
     description: Specify the name of the printer that you would like to decommission.
     multivalued: true
     name: node_to_decommission
-    regex: .*-prtr.*
+    regex: .*\.prtr
     required: true
-    value: .*-prtr.internal
+    value: printer.domain.prtr
   scheduleEnabled: true
   sequence:
     commands:
