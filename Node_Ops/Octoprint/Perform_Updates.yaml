@@ -1,0 +1,33 @@
+- defaultTab: monitor
+  description: Use this job to perform Octoprint updates.
+  executionEnabled: true
+  group: Octoprint
+  loglevel: INFO
+  name: Perform Updates
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '8'
+    filter: 'name: .*prtr.*'
+  nodesSelectedByDefault: false
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Display updates
+      jobref:
+        group: Octoprint
+        name: Check Updates
+        nodeStep: 'true'
+        nodefilters:
+          dispatch:
+            nodeIntersect: true
+    - description: Perform updates
+      exec: /opt/octoprint/OctoPrint/venv/bin/octoprint plugins softwareupdate:update
+    keepgoing: false
+    strategy: node-first
+  timeout: '6000'
+

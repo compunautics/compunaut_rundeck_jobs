@@ -1,0 +1,25 @@
+- defaultTab: monitor
+  description: Use this job to check for Octoprint updates.
+  executionEnabled: true
+  group: Octoprint
+  loglevel: INFO
+  name: Check Updates
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '8'
+    filter: 'name: .*prtr.*'
+  nodesSelectedByDefault: false
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Check for updates
+      exec: sudo -u octoprint /opt/octoprint/OctoPrint/venv/bin/octoprint plugins softwareupdate:check
+    keepgoing: false
+    strategy: node-first
+  timeout: '600'
+
