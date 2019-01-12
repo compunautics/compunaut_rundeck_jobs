@@ -29,5 +29,5 @@
       exec: /opt/octoprint/OctoPrint/venv/bin/octoprint plugins softwareupdate:update
     keepgoing: false
     strategy: node-first
-  timeout: '6000'
+  timeout: '600'
 
