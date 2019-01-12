@@ -1,0 +1,49 @@
+- defaultTab: output
+  description: |-
+    Use this job to elevate the printer head.
+    - This is useful if you want to exchange filaments, or perform maintenance.
+  executionEnabled: true
+  group: Components
+  loglevel: INFO
+  name: Elevate Printer
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '8'
+    filter: 'name: .*prtr.*'
+  nodesSelectedByDefault: false
+  options:
+  - description: The octoprint API key. **DO NOT CHANGE THIS VALUE**
+    name: apikey
+    required: true
+    secure: true
+    storagePath: keys/octoprint/api_key
+    valueExposed: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Elevate the printer
+      interpreterArgsQuoted: false
+      script: |-
+        #!/usr/bin/python
+
+        import requests
+        import json
+
+        headers={"X-Api-Key":"@option.apikey@","Content-Type":"application/json"}
+        payload={"command":"jog","absolute":1,"speed":1500,"x":110,"y":110,"z":110}
+        url="http://127.0.0.1:5000/api/printer/printhead"
+
+        r = requests.post(url, headers=headers, data=json.dumps(payload))
+
+        print "Printer returned:"
+        print r.status_code
+      scriptInterpreter: sudo /usr/bin/python <
+    keepgoing: false
+    strategy: node-first
+  timeout: '300'
+

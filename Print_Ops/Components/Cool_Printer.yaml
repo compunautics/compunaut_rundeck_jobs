@@ -1,0 +1,64 @@
+- defaultTab: output
+  description: Use this job to cool the printer.
+  executionEnabled: true
+  group: Components
+  loglevel: INFO
+  name: Cool Printer
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '8'
+    filter: 'name: .*prtr.*'
+  nodesSelectedByDefault: false
+  options:
+  - description: The octoprint API key. **DO NOT CHANGE THIS VALUE**
+    name: apikey
+    required: true
+    secure: true
+    storagePath: keys/octoprint/api_key
+    valueExposed: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Cool the print head
+      interpreterArgsQuoted: false
+      script: |-
+        #!/usr/bin/python
+
+        import requests
+        import json
+
+        headers = {"X-Api-Key":"@option.apikey@","Content-Type":"application/json"}
+        payload = {"command":"target","targets":{"tool0":0}}
+        url = "http://127.0.0.1:5000/api/printer/tool"
+
+        r = requests.post(url, headers=headers, data=json.dumps(payload))
+
+        print "Printer returned:"
+        print r.status_code
+      scriptInterpreter: sudo /usr/bin/python <
+    - description: Cool the print bed
+      interpreterArgsQuoted: false
+      script: |-
+        #!/usr/bin/python
+
+        import requests
+        import json
+
+        headers = {"X-Api-Key":"@option.apikey@","Content-Type":"application/json"}
+        payload = {"command":"target","target":0}
+        url = "http://127.0.0.1:5000/api/printer/bed"
+
+        r = requests.post(url, headers=headers, data=json.dumps(payload))
+
+        print "Printer returned:"
+        print r.status_code
+      scriptInterpreter: sudo /usr/bin/python <
+    keepgoing: false
+    strategy: node-first
+  timeout: '300'
+
