@@ -26,6 +26,14 @@
   scheduleEnabled: true
   sequence:
     commands:
+    - description: Home printer first
+      jobref:
+        group: Components
+        name: Home Printer
+        nodeStep: 'true'
+        nodefilters:
+          dispatch:
+            nodeIntersect: true
     - description: Elevate the printer
       interpreterArgsQuoted: false
       script: |-
