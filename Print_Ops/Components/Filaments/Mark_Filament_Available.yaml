@@ -1,7 +1,7 @@
 - defaultTab: summary
   description: Use this job to mark an already registered filament available.
   executionEnabled: true
-  group: Components
+  group: Components/Filaments
   loglevel: INFO
   multipleExecutions: true
   name: Mark Filament Available

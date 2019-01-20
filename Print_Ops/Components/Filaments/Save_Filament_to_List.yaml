@@ -3,7 +3,7 @@
     This job creates and maintains a list of filaments that have been registered in the past.
     - The "Register Filament" job refers to the files created in this job to make it easier to reuse previously used filaments.
   executionEnabled: true
-  group: Components
+  group: Components/Filaments
   loglevel: INFO
   multipleExecutions: true
   name: Save Filament to List

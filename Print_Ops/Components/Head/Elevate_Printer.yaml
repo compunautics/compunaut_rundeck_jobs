@@ -1,10 +1,12 @@
 - defaultTab: output
-  description: Use this job to home the printer head.
+  description: |-
+    Use this job to elevate the printer head.
+    - This is useful if you want to exchange filaments, or perform maintenance.
   executionEnabled: true
-  group: Components
+  group: Components/Head
   loglevel: INFO
   multipleExecutions: true
-  name: Home Printer
+  name: Elevate Printer
   nodeFilterEditable: false
   nodefilters:
     dispatch:
@@ -25,7 +27,15 @@
   scheduleEnabled: true
   sequence:
     commands:
-    - description: Home the printer
+    - description: Home printer first
+      jobref:
+        group: Components
+        name: Home Printer
+        nodeStep: 'true'
+        nodefilters:
+          dispatch:
+            nodeIntersect: true
+    - description: Elevate the printer
       interpreterArgsQuoted: false
       script: |-
         #!/usr/bin/python
@@ -34,7 +44,7 @@
         import json
 
         headers={"X-Api-Key":"@option.apikey@","Content-Type":"application/json"}
-        payload={"command":"home","axes":["x","y","z"]}
+        payload={"command":"jog","absolute":1,"speed":1500,"x":110,"y":110,"z":110}
         url="http://127.0.0.1:5000/api/printer/printhead"
 
         r = requests.post(url, headers=headers, data=json.dumps(payload))

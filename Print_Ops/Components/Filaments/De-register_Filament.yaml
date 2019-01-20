@@ -3,7 +3,7 @@
     Use this job to de-register a filament.
     - This job will delete all filament registrations on the target, whether they exist or not.
   executionEnabled: true
-  group: Components
+  group: Components/Filaments
   loglevel: INFO
   multipleExecutions: true
   name: De-register Filament

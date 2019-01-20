@@ -1,10 +1,10 @@
 - defaultTab: output
-  description: Use this job to cool the printer.
+  description: Use this job to heat the printer.
   executionEnabled: true
-  group: Components
+  group: Components/Temperature
   loglevel: INFO
   multipleExecutions: true
-  name: Cool Printer
+  name: Heat Printer
   nodeFilterEditable: false
   nodefilters:
     dispatch:
@@ -16,6 +16,16 @@
     filter: 'name: .*prtr.*'
   nodesSelectedByDefault: false
   options:
+  - description: Set the head temperature.
+    name: head_temp
+    regex: \d+
+    required: true
+    value: '220'
+  - description: Set the bed temperature.
+    name: bed_temp
+    regex: \d+
+    required: true
+    value: '50'
   - description: The octoprint API key. **DO NOT CHANGE THIS VALUE**
     name: apikey
     required: true
@@ -25,7 +35,7 @@
   scheduleEnabled: true
   sequence:
     commands:
-    - description: Cool the print head
+    - description: Heat the print head
       interpreterArgsQuoted: false
       script: |-
         #!/usr/bin/python
@@ -34,7 +44,7 @@
         import json
 
         headers = {"X-Api-Key":"@option.apikey@","Content-Type":"application/json"}
-        payload = {"command":"target","targets":{"tool0":0}}
+        payload = {"command":"target","targets":{"tool0":@option.head_temp@}}
         url = "http://127.0.0.1:5000/api/printer/tool"
 
         r = requests.post(url, headers=headers, data=json.dumps(payload))
@@ -42,7 +52,7 @@
         print "Printer returned:"
         print r.status_code
       scriptInterpreter: sudo /usr/bin/python <
-    - description: Cool the print bed
+    - description: Heat the print bed
       interpreterArgsQuoted: false
       script: |-
         #!/usr/bin/python
@@ -51,7 +61,7 @@
         import json
 
         headers = {"X-Api-Key":"@option.apikey@","Content-Type":"application/json"}
-        payload = {"command":"target","target":0}
+        payload = {"command":"target","target":@option.bed_temp@}
         url = "http://127.0.0.1:5000/api/printer/bed"
 
         r = requests.post(url, headers=headers, data=json.dumps(payload))

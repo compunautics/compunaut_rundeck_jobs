@@ -1,10 +1,10 @@
 - defaultTab: summary
-  description: Use this job to mark an already registered filament unavailable.
+  description: Use this job to flush the saved filament list.
   executionEnabled: true
-  group: Components
+  group: Components/Filaments
   loglevel: INFO
   multipleExecutions: true
-  name: Mark Filament Unavailable
+  name: Flush Filament List
   nodeFilterEditable: false
   nodefilters:
     dispatch:
@@ -13,13 +13,13 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '8'
-    filter: 'name: .*prtr.*'
-  nodesSelectedByDefault: false
+    filter: 'name: .*rundeck.*'
+  nodesSelectedByDefault: true
   scheduleEnabled: true
   sequence:
     commands:
-    - description: Mark filament unavailable
-      exec: sudo /etc/consul.d/scripts/make_unavailable.py
+    - description: Delete the filament list
+      exec: sudo rm -fv /var/rundeck/projects/Print_Ops/etc/filament_list.json
     keepgoing: true
     strategy: node-first
   timeout: '300'
