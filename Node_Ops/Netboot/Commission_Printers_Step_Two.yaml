@@ -24,6 +24,9 @@
     regex: .*prtr.*
     required: true
     value: '*prtr*'
+  retry:
+    delay: 1m
+    retry: '3'
   scheduleEnabled: true
   sequence:
     commands:
