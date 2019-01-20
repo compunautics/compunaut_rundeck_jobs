@@ -1,0 +1,26 @@
+- defaultTab: summary
+  description: Use this job to mark an already registered filament unavailable.
+  executionEnabled: true
+  group: Components
+  loglevel: INFO
+  multipleExecutions: true
+  name: Mark Filament Unavailable
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '8'
+    filter: 'name: .*prtr.*'
+  nodesSelectedByDefault: false
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Mark filament unavailable
+      exec: sudo /etc/consul.d/scripts/make_unavailable.py
+    keepgoing: true
+    strategy: node-first
+  timeout: '300'
+

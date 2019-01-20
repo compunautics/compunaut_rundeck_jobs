@@ -5,6 +5,7 @@
   executionEnabled: true
   group: Components
   loglevel: INFO
+  multipleExecutions: true
   name: Elevate Printer
   nodeFilterEditable: false
   nodefilters:

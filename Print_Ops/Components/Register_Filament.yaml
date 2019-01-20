@@ -1,0 +1,41 @@
+- defaultTab: summary
+  description: Use this job to register a filament on a printer
+  executionEnabled: true
+  group: Components
+  loglevel: INFO
+  multipleExecutions: true
+  name: Register Filament
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '8'
+    filter: 'name: .*prtr.*'
+  nodesSelectedByDefault: false
+  options:
+  - description: |-
+      Provide the filament to be registered.
+      - required format: "{color}_{material}"
+    name: filament
+    regex: .*_.*
+    required: true
+    valuesUrl: file:/var/rundeck/projects/Print_Ops/etc/filament_list.json
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Register filament
+      exec: sudo /etc/consul.d/scripts/register_filament.py -f ${option.filament}
+    - description: Reload consul
+      exec: sudo systemctl reload consul
+    - description: Save Filament to List
+      jobref:
+        args: -filament ${option.filament}
+        group: Components
+        name: Save Filament to List
+    keepgoing: true
+    strategy: node-first
+  timeout: '300'
+

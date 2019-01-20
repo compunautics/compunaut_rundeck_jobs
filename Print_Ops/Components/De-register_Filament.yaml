@@ -1,0 +1,30 @@
+- defaultTab: summary
+  description: |-
+    Use this job to de-register a filament.
+    - This job will delete all filament registrations on the target, whether they exist or not.
+  executionEnabled: true
+  group: Components
+  loglevel: INFO
+  multipleExecutions: true
+  name: De-register Filament
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '8'
+    filter: 'name: .*prtr.*'
+  nodesSelectedByDefault: false
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Delete filament files
+      exec: sudo rm -fv /etc/consul.d/{filament.json,filament_bool}
+    - description: Reload consul
+      exec: sudo systemctl reload consul
+    keepgoing: true
+    strategy: node-first
+  timeout: '300'
+

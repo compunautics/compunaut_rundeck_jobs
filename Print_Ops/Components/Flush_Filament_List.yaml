@@ -1,0 +1,26 @@
+- defaultTab: summary
+  description: Use this job to flush the saved filament list.
+  executionEnabled: true
+  group: Components
+  loglevel: INFO
+  multipleExecutions: true
+  name: Flush Filament List
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '8'
+    filter: 'name: .*rundeck.*'
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Delete the filament list
+      exec: sudo rm -fv /var/rundeck/projects/Print_Ops/etc/filament_list.json
+    keepgoing: true
+    strategy: node-first
+  timeout: '300'
+

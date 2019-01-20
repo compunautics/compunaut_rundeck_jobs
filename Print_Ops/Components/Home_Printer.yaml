@@ -3,6 +3,7 @@
   executionEnabled: true
   group: Components
   loglevel: INFO
+  multipleExecutions: true
   name: Home Printer
   nodeFilterEditable: false
   nodefilters:
