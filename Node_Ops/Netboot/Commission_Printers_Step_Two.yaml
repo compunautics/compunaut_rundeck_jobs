@@ -26,7 +26,7 @@
     value: '*prtr*'
   retry:
     delay: 1m
-    retry: '3'
+    retry: '1'
   scheduleEnabled: true
   sequence:
     commands:
