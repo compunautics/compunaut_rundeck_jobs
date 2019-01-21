@@ -1,5 +1,5 @@
 - defaultTab: summary
-  description: Use this job to flush all gcode files.
+  description: Use this job to flush all gcode files. THIS WILL DELETE EVERYTHING.
   executionEnabled: true
   group: Components/Gcodes
   loglevel: INFO
