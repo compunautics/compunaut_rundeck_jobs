@@ -1,0 +1,213 @@
+- defaultTab: summary
+  description: |-
+    Use this job to upload a batch of gcode files to the rundeck servers.
+    - This job expects you to specify at least one gcode file and a "top_category" for the file.
+    - The category options are used to simplify management of gcode files in other jobs.
+    - All files input through this job will get assigned to the same categories.
+  executionEnabled: true
+  group: Components/Gcodes
+  loglevel: INFO
+  multipleExecutions: true
+  name: Upload Gcode Files
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '2'
+    filter: 'name: .*rundeck.*'
+  nodesSelectedByDefault: true
+  options:
+  - description: |-
+      Input the gcode files' filament category.
+      - Use the format ${color}_${filament}.
+      - This setting will later be used to register filaments on printers.
+    name: filament_category
+    required: true
+    valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/
+  - description: |-
+      Input the gcode files' client category.
+      - This category exists to classify gcodes according to client.
+    name: client_category
+    required: true
+    valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/${option.filament_category.value}
+  - description: |-
+      Input the gcode files' sub category.
+      - This category exists for any arbitrary sub classification you may wish to use.
+    name: sub_category
+    required: true
+    valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/${option.filament_category.value}/${option.client_category.value}
+  - description: Input first file.
+    name: file_1
+    required: true
+    type: file
+  - description: Input second file.
+    name: file_2
+    type: file
+  - description: Input third file.
+    name: file_3
+    type: file
+  - description: Input fourth file.
+    name: file_4
+    type: file
+  - description: Input fifth file.
+    name: file_5
+    type: file
+  - description: Input sixth file.
+    name: file_6
+    type: file
+  - description: Input seventh file.
+    name: file_7
+    type: file
+  - description: Input eighth file.
+    name: file_8
+    type: file
+  retry:
+    delay: 1m
+    retry: '1'
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        destinationPath: /tmp/${file.file_1.fileName}
+        echo: 'true'
+        recursive: 'false'
+        sourcePath: ${file.file_1}
+      description: Load file_1
+      nodeStep: true
+      type: copyfile
+    - configuration:
+        destinationPath: /tmp/${file.file_2.fileName}
+        echo: 'true'
+        recursive: 'false'
+        sourcePath: ${file.file_2}
+      description: Load file_2
+      errorhandler:
+        configuration:
+          command: echo "No file to upload, skipping"
+        keepgoingOnSuccess: true
+        nodeStep: true
+        type: localexec
+      nodeStep: true
+      type: copyfile
+    - configuration:
+        destinationPath: /tmp/${file.file_3.fileName}
+        echo: 'true'
+        recursive: 'false'
+        sourcePath: ${file.file_3}
+      description: Load file_3
+      errorhandler:
+        configuration:
+          command: echo "No file to upload, skipping"
+        keepgoingOnSuccess: true
+        nodeStep: true
+        type: localexec
+      nodeStep: true
+      type: copyfile
+    - configuration:
+        destinationPath: /tmp/${file.file_4.fileName}
+        echo: 'true'
+        recursive: 'false'
+        sourcePath: ${file.file_4}
+      description: Load file_4
+      errorhandler:
+        configuration:
+          command: echo "No file to upload, skipping"
+        keepgoingOnSuccess: true
+        nodeStep: true
+        type: localexec
+      nodeStep: true
+      type: copyfile
+    - configuration:
+        destinationPath: /tmp/${file.file_5.fileName}
+        echo: 'true'
+        recursive: 'false'
+        sourcePath: ${file.file_5}
+      description: Load file_5
+      errorhandler:
+        configuration:
+          command: echo "No file to upload, skipping"
+        keepgoingOnSuccess: true
+        nodeStep: true
+        type: localexec
+      nodeStep: true
+      type: copyfile
+    - configuration:
+        destinationPath: /tmp/${file.file_6.fileName}
+        echo: 'true'
+        recursive: 'false'
+        sourcePath: ${file.file_6}
+      description: Load file_6
+      errorhandler:
+        configuration:
+          command: echo "No file to upload, skipping"
+        keepgoingOnSuccess: true
+        nodeStep: true
+        type: localexec
+      nodeStep: true
+      type: copyfile
+    - configuration:
+        destinationPath: /tmp/${file.file_7.fileName}
+        echo: 'true'
+        recursive: 'false'
+        sourcePath: ${file.file_7}
+      description: Load file_7
+      errorhandler:
+        configuration:
+          command: echo "No file to upload, skipping"
+        keepgoingOnSuccess: true
+        nodeStep: true
+        type: localexec
+      nodeStep: true
+      type: copyfile
+    - configuration:
+        destinationPath: /tmp/${file.file_8.fileName}
+        echo: 'true'
+        recursive: 'false'
+        sourcePath: ${file.file_8}
+      description: Load file_8
+      errorhandler:
+        configuration:
+          command: echo "No file to upload, skipping"
+        keepgoingOnSuccess: true
+        nodeStep: true
+        type: localexec
+      nodeStep: true
+      type: copyfile
+    - description: Create gcode directories
+      interpreterArgsQuoted: false
+      script: |-
+        #!/bin/bash
+
+        filament_category="@option.filament_category@"
+        client_category="@option.client_category@"
+        sub_category="@option.sub_category@"
+
+        mkdir -pv /var/rundeck/projects/Print_Ops/gcodes/${filament_category}/${client_category}/${sub_category}
+      scriptInterpreter: sudo /bin/bash <
+    - description: Move uploaded files
+      interpreterArgsQuoted: false
+      script: |-
+        #!/bin/bash
+
+        filament_category="@option.filament_category@"
+        client_category="@option.client_category@"
+        sub_category="@option.sub_category@"
+        file_list="@file.file_1.fileName@ @file.file_2.fileName@ @file.file_3.fileName@ @file.file_4.fileName@ @file.file_5.fileName@ @file.file_6.fileName@ @file.file_7.fileName@ @file.file_8.fileName@"
+
+        for file in ${file_list}; do
+            if [[ -f /tmp/${file} ]]; then
+                    mv -v /tmp/${file} /var/rundeck/projects/Print_Ops/gcodes/${filament_category}/${client_category}/${sub_category}
+            else
+                echo "No file uploaded, skipping..."
+            fi
+        done
+      scriptInterpreter: sudo /bin/bash <
+    - description: Set ownership of all gcodes to rundeck:rundeck
+      exec: sudo chown -Rv rundeck. /var/rundeck/projects/Print_Ops/gcodes/
+    keepgoing: true
+    strategy: node-first
+  timeout: '900'
+

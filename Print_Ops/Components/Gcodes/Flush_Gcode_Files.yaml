@@ -1,0 +1,26 @@
+- defaultTab: summary
+  description: Use this job to flush all gcode files.
+  executionEnabled: true
+  group: Components/Gcodes
+  loglevel: INFO
+  name: Flush Gcode Files
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '2'
+    filter: 'name: .*rundeck.*'
+  nodesSelectedByDefault: true
+  retry: '1'
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Flush all gcode files
+      exec: sudo rm -rfv /var/rundeck/projects/Print_Ops/gcodes/
+    keepgoing: false
+    strategy: node-first
+  timeout: '300'
+

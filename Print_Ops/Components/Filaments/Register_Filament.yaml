@@ -16,13 +16,11 @@
     filter: 'name: .*prtr.*'
   nodesSelectedByDefault: false
   options:
-  - description: |-
-      Provide the filament to be registered.
-      - required format: "{color}_{material}"
+  - description: Provide the filament to be registered.
+    enforced: true
     name: filament
-    regex: .*_.*
     required: true
-    valuesUrl: file:/var/rundeck/projects/Print_Ops/etc/filament_list.json
+    valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/
   scheduleEnabled: true
   sequence:
     commands:
@@ -30,11 +28,6 @@
       exec: sudo /etc/consul.d/scripts/register_filament.py -f ${option.filament}
     - description: Reload consul
       exec: sudo systemctl reload consul
-    - description: Save Filament to List
-      jobref:
-        args: -filament ${option.filament}
-        group: Components/Filaments
-        name: Save Filament to List
     keepgoing: true
     strategy: node-first
   timeout: '300'
