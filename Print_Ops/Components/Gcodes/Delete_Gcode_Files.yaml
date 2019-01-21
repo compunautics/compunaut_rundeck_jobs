@@ -1,0 +1,73 @@
+- defaultTab: summary
+  description: Use this job to delete a gcode file.
+  executionEnabled: true
+  group: Components/Gcodes
+  loglevel: INFO
+  multipleExecutions: true
+  name: Delete Gcode Files
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '2'
+    filter: 'name: .*rundeck.*'
+  nodesSelectedByDefault: true
+  options:
+  - description: |-
+      Input the gcode files' filament category.
+      - Use the format ${color}_${filament}.
+      - This setting will later be used to register filaments on printers.
+    enforced: true
+    name: filament_category
+    required: true
+    valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/
+  - description: |-
+      Input the gcode files' client category.
+      - This category exists to classify gcodes according to client.
+    enforced: true
+    name: client_category
+    required: true
+    valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/${option.filament_category.value}
+  - description: |-
+      Input the gcode files' sub category.
+      - This category exists for any arbitrary sub classification you may wish to use.
+    enforced: true
+    name: sub_category
+    required: true
+    valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/${option.filament_category.value}/${option.client_category.value}
+  - delimiter: ' '
+    description: Input the gcode file to delete.
+    enforced: true
+    multivalued: true
+    name: gcode_file
+    required: true
+    valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/${option.filament_category.value}/${option.client_category.value}/${option.sub_category.value}
+  retry:
+    delay: 1m
+    retry: '1'
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Delete gcode files
+      interpreterArgsQuoted: false
+      script: |-
+        #!/bin/bash
+
+        filament_category="@option.filament_category@"
+        client_category="@option.client_category@"
+        sub_category="@option.sub_category@"
+        file_list="@option.gcode_file@"
+
+        for file in ${file_list}; do
+            if [[ -f /var/rundeck/projects/Print_Ops/gcodes/${filament_category}/${client_category}/${sub_category}/${file} ]]; then
+                rm -fv /var/rundeck/projects/Print_Ops/gcodes/${filament_category}/${client_category}/${sub_category}/${file}
+            fi
+        done
+      scriptInterpreter: sudo /bin/bash <
+    keepgoing: true
+    strategy: node-first
+  timeout: '900'
+
