@@ -29,7 +29,7 @@
     commands:
     - description: Home printer first
       jobref:
-        group: Components
+        group: Components/Head
         name: Home Printer
         nodeStep: 'true'
         nodefilters:
