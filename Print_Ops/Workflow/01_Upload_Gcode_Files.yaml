@@ -5,10 +5,10 @@
     - The category options are used to simplify management of gcode files in other jobs.
     - All files input through this job will get assigned to the same categories.
   executionEnabled: true
-  group: Components/Gcodes
+  group: Workflow
   loglevel: INFO
   multipleExecutions: true
-  name: Upload Gcode Files
+  name: 01 Upload Gcode Files
   nodeFilterEditable: false
   nodefilters:
     dispatch:
@@ -17,7 +17,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '2'
-    filter: 'name: .*rundeck.*'
+    filter: 'name: (localhost|.*rundeck.*)'
   nodesSelectedByDefault: true
   options:
   - description: |-

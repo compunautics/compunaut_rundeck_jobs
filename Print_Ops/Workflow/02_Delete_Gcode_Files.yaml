@@ -1,10 +1,10 @@
 - defaultTab: summary
   description: Use this job to delete gcode files without flushing all of them.
   executionEnabled: true
-  group: Components/Gcodes
+  group: Workflow
   loglevel: INFO
   multipleExecutions: true
-  name: Delete Gcode Files
+  name: 02 Delete Gcode Files
   nodeFilterEditable: false
   nodefilters:
     dispatch:
@@ -13,7 +13,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '2'
-    filter: 'name: .*rundeck.*'
+    filter: 'name: (localhost|.*rundeck.*)'
   nodesSelectedByDefault: true
   options:
   - description: |-
