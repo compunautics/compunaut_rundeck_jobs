@@ -4,7 +4,7 @@
   group: Workflow
   loglevel: INFO
   multipleExecutions: true
-  name: Issue Print Order
+  name: 03 Issue Print Order
   nodeFilterEditable: false
   nodefilters:
     dispatch:
