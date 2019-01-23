@@ -1,10 +1,10 @@
-- defaultTab: summary
+- defaultTab: output
   description: Use this job to issue a print order to the fleet.
   executionEnabled: true
   group: Workflow
   loglevel: INFO
-  multipleExecutions: true
-  name: 03 Issue Print Order
+  maxMultipleExecutions: '1'
+  name: 03 Issue Print Order by Filament
   nodeFilterEditable: false
   nodefilters:
     dispatch:
@@ -13,7 +13,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: 'name: .*rundeck.*'
+    filter: 'name: localhost'
   nodesSelectedByDefault: true
   options:
   - description: |-
@@ -38,10 +38,8 @@
     name: sub_category
     required: true
     valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/${option.filament_category.value}/${option.client_category.value}
-  - delimiter: ' '
-    description: Input the gcode file to delete.
+  - description: Input the gcode file to delete.
     enforced: true
-    multivalued: true
     name: gcode_file
     required: true
     valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/${option.filament_category.value}/${option.client_category.value}/${option.sub_category.value}
@@ -49,18 +47,46 @@
     name: how_many
     regex: \d+
     required: true
+  - description: The octoprint API key. **DO NOT CHANGE THIS VALUE**
+    name: apikey
+    required: true
+    secure: true
+    storagePath: keys/octoprint/api_key
+    valueExposed: true
   scheduleEnabled: true
   sequence:
     commands:
-    - description: placeholder
-      script: |-
-        #!/usr/bin/python
-
-        # IMPORT MODULES
-        # DEFINE VARS
-        # GET AVAILABLE PRINTERS
-        # COMPARE TO HOW_MANY
-        # ISSUE JOBS
+    - description: Issue Print Order
+      interpreterArgsQuoted: false
+      script: "#!/usr/bin/python\n# IMPORT MODULES\nimport subprocess\nimport requests\n\
+        import json\nimport time\n\n# DEFINE VARS\napi_key = '@option.apikey@'\ngcode_dir\
+        \ = '/var/rundeck/projects/Print_Ops/gcodes/'\nfilament_category = '@option.filament_category@'\
+        \ \nclient_category = '@option.client_category@' \nsub_category = '@option.sub_category@'\
+        \ \ngcode_file = '@option.gcode_file@'\ngcode_path = gcode_dir+filament_category+\"\
+        /\"+client_category+\"/\"+sub_category+\"/\"+gcode_file\nhow_many = @option.how_many@\n\
+        \nprinter_list = []\n\n# GET AVAILABLE PRINTERS\ndef get_available_printers():\n\
+        \  try:\n    command = \"for ip in `host filament_\"+filament_category+\"\
+        .service.consul | awk '{print $4}'`; do consul catalog nodes | grep ${ip}\
+        \ | awk '{print $1}'; done\"\n    process = subprocess.Popen(command, shell=True,\
+        \ executable='/bin/bash', stdout=subprocess.PIPE)\n    output,error = process.communicate()\n\
+        \    printers = output.splitlines()\n    return printers\n  except Exception\
+        \ as e:\n    print e\n\n# ISSUE JOBS\nwhile how_many > 0:\n  try:\n    # output\
+        \ num remaining\n    print \"We have \"+str(how_many)+\" print orders to issue.\"\
+        \n\n    # get available printers\n    printer_list = get_available_printers()\n\
+        \n    # what if not enough?\n    if len(printer_list) < 1:\n      while len(printer_list)\
+        \ < 1:\n        print \"There are no available printers. Waiting 15 minutes\
+        \ and checking again.\"\n        time.sleep(900)\n        printer_list = get_available_printers()\n\
+        \    else:\n      print \"We found \"+str(len(printer_list))+\" available\
+        \ printers.\"\n\n    # select printer\n    printer = printer_list[0]\n\n \
+        \   # define vars\n    headers={\"X-Api-Key\":api_key}\n    files={\n    \
+        \    \"file\": (gcode_file, open(gcode_path, 'rb')), \n        'select': ('',\
+        \ 'true'), \n        'print': ('', 'true')\n    }\n    url=\"http://\"+printer+\"\
+        :5000/api/files/local\"\n\n    # send api call\n    print \"Issuing print\
+        \ to \"+printer\n    r = requests.post(url, headers=headers, files=files)\n\
+        \    print \"Printer returned: \"+str(r.status_code)\n\n    # decrement\n\
+        \    how_many = how_many - 1\n    time.sleep(15)\n\n  except Exception as\
+        \ e:\n    print e"
+      scriptInterpreter: sudo python <
     keepgoing: true
     strategy: node-first
   timeout: 48h

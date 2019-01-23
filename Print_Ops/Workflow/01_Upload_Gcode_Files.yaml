@@ -22,22 +22,25 @@
   options:
   - description: |-
       Input the gcode files' filament category.
-      - Use the format ${color}_${filament}.
+      - Use the format ${printer\_type}\_${color}\_${filament}.
       - This setting will later be used to register filaments on printers.
     name: filament_category
     required: true
+    value: anet_a8_yellow_pla
     valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/
   - description: |-
       Input the gcode files' client category.
       - This category exists to classify gcodes according to client.
     name: client_category
     required: true
+    value: some_local_business
     valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/${option.filament_category.value}
   - description: |-
       Input the gcode files' sub category.
       - This category exists for any arbitrary sub classification you may wish to use.
     name: sub_category
     required: true
+    value: part_type
     valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/${option.filament_category.value}/${option.client_category.value}
   - description: Input first file.
     name: file_1
