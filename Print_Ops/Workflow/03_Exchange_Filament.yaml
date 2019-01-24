@@ -1,0 +1,79 @@
+- defaultTab: monitor
+  description: "Use this job to exchange filament on a printer.\n- This job will also\
+    \ register that filament with the printer. \n- Make sure that you have uploaded\
+    \ your gcodes, or you will not be able to use this job."
+  executionEnabled: true
+  group: Workflow
+  loglevel: INFO
+  multipleExecutions: true
+  name: 03 Exchange Filament
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '8'
+    filter: 'name: .*prtr.*'
+  nodesSelectedByDefault: false
+  options:
+  - description: |-
+      Input the filament that this printer will now be using.
+      - The available options are based on gcodes that have been uploaded.
+      - If you do not see your desired option, please upload a gcode with the desired filament category.
+    enforced: true
+    name: new_filament
+    required: true
+    valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/
+  - description: Input the desired head temp.
+    name: head_temp
+    regex: \d+
+    required: true
+    value: '220'
+  - description: Input the desired bed temp.
+    name: bed_temp
+    regex: \d+
+    required: true
+    value: '0'
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Elevate printer head
+      jobref:
+        group: Components/Head
+        name: Elevate Printer
+        nodeStep: 'true'
+        nodefilters:
+          dispatch:
+            nodeIntersect: true
+    - description: Heat printer head
+      jobref:
+        args: -head_temp ${option.head_temp} -bed_temp ${option.bed_temp}
+        group: Components/Temperature
+        name: Heat Printer
+        nodeStep: 'true'
+        nodefilters:
+          dispatch:
+            nodeIntersect: true
+    - description: De-register existing filament
+      jobref:
+        group: Components/Filaments
+        name: De-register Filament
+        nodeStep: 'true'
+        nodefilters:
+          dispatch:
+            nodeIntersect: true
+    - description: Register new filament
+      jobref:
+        args: -filament ${option.new_filament}
+        group: Components/Filaments
+        name: Register Filament
+        nodeStep: 'true'
+        nodefilters:
+          dispatch:
+            nodeIntersect: true
+    keepgoing: false
+    strategy: node-first
+  timeout: '300'
+

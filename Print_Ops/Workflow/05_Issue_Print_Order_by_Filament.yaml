@@ -1,10 +1,18 @@
 - defaultTab: output
-  description: Use this job to issue a print order to the fleet.
+  description: |-
+    Use this job to issue a print order to the fleet.
+    - This job will select printers according to filament registration.
+    - This job will attempt to issue "how_many" orders to your printer fleet.
+    - If there are not enough printers available with the filament, the job try to fulfill "how_many" orders for 48 hours, after which it times out.
+
+    Caution!
+    - Be _very_ careful when issuing multiple orders to the same filament category! You may accidentally set up order queues that compete for the same printer pool, creating conflicts.
+    - Best practice is to issue print orders for a given filament_category one at a time until you exhaust your filament pool, and then wait until the last job is complete before issuing more.
   executionEnabled: true
   group: Workflow
   loglevel: INFO
-  maxMultipleExecutions: '1'
-  name: 03 Issue Print Order by Filament
+  multipleExecutions: true
+  name: 05 Issue Print Order by Filament
   nodeFilterEditable: false
   nodefilters:
     dispatch:

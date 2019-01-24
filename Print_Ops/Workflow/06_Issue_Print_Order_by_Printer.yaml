@@ -1,0 +1,97 @@
+- defaultTab: monitor
+  description: Use this job to issue a print order to specific printers in the fleet.
+  executionEnabled: true
+  group: Workflow
+  loglevel: INFO
+  multipleExecutions: true
+  name: 06 Issue Print Order by Printer
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: true
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '8'
+    filter: 'name: .*prtr.*'
+  nodesSelectedByDefault: false
+  options:
+  - description: |-
+      Input the gcode files' filament category.
+      - Use the format ${color}_${filament}.
+      - This setting will later be used to register filaments on printers.
+    enforced: true
+    name: filament_category
+    required: true
+    valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/
+  - description: |-
+      Input the gcode files' client category.
+      - This category exists to classify gcodes according to client.
+    enforced: true
+    name: client_category
+    required: true
+    valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/${option.filament_category.value}
+  - description: |-
+      Input the gcode files' sub category.
+      - This category exists for any arbitrary sub classification you may wish to use.
+    enforced: true
+    name: sub_category
+    required: true
+    valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/${option.filament_category.value}/${option.client_category.value}
+  - description: Input the gcode file to delete.
+    enforced: true
+    name: gcode_file
+    required: true
+    valuesUrl: http://localhost:8080/get_dir_contents.py?dir=/var/rundeck/projects/Print_Ops/gcodes/${option.filament_category.value}/${option.client_category.value}/${option.sub_category.value}
+  - description: The octoprint API key. **DO NOT CHANGE THIS VALUE**
+    name: apikey
+    required: true
+    secure: true
+    storagePath: keys/octoprint/api_key
+    valueExposed: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        destinationPath: /tmp/${option.gcode_file}
+        echo: 'true'
+        recursive: 'false'
+        sourcePath: /var/rundeck/projects/Print_Ops/gcodes/${option.filament_category}/${option.client_category}/${option.sub_category}/${option.gcode_file}
+      description: Copy gcode file to printer
+      nodeStep: true
+      type: copyfile
+    - description: De-register any existing filaments
+      jobref:
+        group: Components/Filaments
+        name: De-register Filament
+        nodeStep: 'true'
+        nodefilters:
+          dispatch:
+            nodeIntersect: true
+    - description: Register filament
+      jobref:
+        args: -filament ${option.filament_category}
+        group: Components/Filaments
+        name: Register Filament
+        nodeStep: 'true'
+        nodefilters:
+          dispatch:
+            nodeIntersect: true
+    - description: Issue Print Order
+      interpreterArgsQuoted: false
+      script: "#!/usr/bin/python\n# IMPORT MODULES\nimport requests\n\n# DEFINE VARS\n\
+        api_key = '@option.apikey@'\ngcode_dir = '/tmp'\ngcode_file = '@option.gcode_file@'\n\
+        gcode_path = gcode_dir+\"/\"+gcode_file\nnode_name = \"@node.name@\"\n\n#\
+        \ ISSUE JOB\ntry:\n  # define vars\n  headers={\"X-Api-Key\": api_key}\n \
+        \ files={\n    'file': (gcode_file, open(gcode_path, 'rb')), \n    'select':\
+        \ ('', 'true'), \n    'print': ('', 'true')\n  }\n  url=\"http://localhost:5000/api/files/local\"\
+        \n\n  # send api call\n  print \"Issuing print to \"+node_name\n  r = requests.post(url,\
+        \ headers=headers, files=files)\n  print \"Printer returned: \"+str(r.status_code)\n\
+        \nexcept Exception as e:\n  print e"
+      scriptInterpreter: sudo python <
+    - description: Delete the gcode file
+      exec: sudo rm -fv /tmp/${option.gcode_file}
+    keepgoing: true
+    strategy: node-first
+  timeout: '600'
+
