@@ -79,15 +79,33 @@
             nodeIntersect: true
     - description: Issue Print Order
       interpreterArgsQuoted: false
-      script: "#!/usr/bin/python\n# IMPORT MODULES\nimport requests\n\n# DEFINE VARS\n\
-        api_key = '@option.apikey@'\ngcode_dir = '/tmp'\ngcode_file = '@option.gcode_file@'\n\
-        gcode_path = gcode_dir+\"/\"+gcode_file\nnode_name = \"@node.name@\"\n\n#\
-        \ ISSUE JOB\ntry:\n  # define vars\n  headers={\"X-Api-Key\": api_key}\n \
-        \ files={\n    'file': (gcode_file, open(gcode_path, 'rb')), \n    'select':\
-        \ ('', 'true'), \n    'print': ('', 'true')\n  }\n  url=\"http://localhost:5000/api/files/local\"\
-        \n\n  # send api call\n  print \"Issuing print to \"+node_name\n  r = requests.post(url,\
-        \ headers=headers, files=files)\n  print \"Printer returned: \"+str(r.status_code)\n\
-        \nexcept Exception as e:\n  print e"
+      script: |-
+        #!/usr/bin/python
+        # IMPORT MODULES
+        import requests
+
+        # DEFINE VARS
+        api_key = '@option.apikey@'
+        gcode_dir = '/tmp'
+        gcode_file = '@option.gcode_file@'
+        gcode_path = gcode_dir+'/'+gcode_file
+        node_name = '@node.name@'
+
+        # ISSUE JOB
+        try:
+          # define vars
+          headers={'X-Api-Key': api_key}
+          files={'file': (gcode_file, open(gcode_path, 'rb'))}
+          data=[('select','true'),('print','true')]
+          url='http://localhost:5000/api/files/local'
+
+          # send api call
+          print 'Issuing print to '+node_name
+          r = requests.post(url, headers=headers, files=files, data=data)
+          print 'Printer returned: '+str(r.status_code)
+
+        except Exception as e:
+          print e
       scriptInterpreter: sudo python <
     - description: Delete the gcode file
       exec: sudo rm -fv /tmp/${option.gcode_file}
