@@ -109,13 +109,13 @@
         \    r =  session.post(\"http://localhost:4440/api/1/job/\"+job_id+\"/run\"\
         , data={'filter':printer})\n    print \"Marking \"+printer+\" unavailable:\
         \ \"+str(r.status_code)\n      \n    # define vars\n    headers={\"X-Api-Key\"\
-        : api_key}\n    files={\n      'file': (gcode_file, open(gcode_path, 'rb')),\
-        \ \n      'select': ('', 'true'), \n      'print': ('', 'true')\n    }\n \
-        \   url=\"http://\"+printer+\":5000/api/files/local\"\n\n    # send api call\n\
-        \    print \"Issuing print to \"+printer\n    r = requests.post(url, headers=headers,\
-        \ files=files)\n    print \"Printer returned: \"+str(r.status_code)\n\n  \
-        \  # decrement\n    how_many = how_many - 1\n    time.sleep(15)\n\n  except\
-        \ Exception as e:\n    print e"
+        : api_key}\n    files={'file': (gcode_file, open(gcode_path, 'rb'))}\n   \
+        \ data=[('select','true'),('print','true')]\n    url=\"http://\"+printer+\"\
+        :5000/api/files/local\"\n\n    # send api call\n    print \"Issuing print\
+        \ to \"+printer\n    r = requests.post(url, headers=headers, files=files,\
+        \ data=data)\n    print \"Printer returned: \"+str(r.status_code)\n\n    #\
+        \ decrement\n    how_many = how_many - 1\n    time.sleep(15)\n\n  except Exception\
+        \ as e:\n    print e"
       scriptInterpreter: sudo python <
     keepgoing: true
     strategy: node-first
