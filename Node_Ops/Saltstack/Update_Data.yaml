@@ -24,12 +24,16 @@
   scheduleEnabled: true
   sequence:
     commands:
+    - description: Delete pillar cache
+      exec: sudo rm -fv /var/cache/salt/master/pillar_cache/*
     - description: Refresh grains
       exec: sudo salt -C "${option.salt_target}" saltutil.refresh_grains -b6 --batch-wait 15 && sleep 10
     - description: Update mine
       exec: sudo salt -C "${option.salt_target}" mine.update -b6 --batch-wait 15 && sleep 10
     - description: Refresh pillar
       exec: sudo salt -C "${option.salt_target}" saltutil.refresh_pillar -b6 --batch-wait 15 && sleep 10
+    - description: Populate pillar cache
+      exec: sudo salt -C '${option.salt_target}' pillar.items -b6 --batch-wait 15 1>/dev/null && sleep 10
     keepgoing: false
     strategy: node-first
   timeout: '300'
