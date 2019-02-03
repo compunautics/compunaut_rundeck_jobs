@@ -21,6 +21,15 @@
     commands:
     - description: Delete the old config file
       exec: sudo rm -fv /opt/octoprint/.octoprint/config.yaml
+    - description: Apply compunaut_octoprint state
+      jobref:
+        args: -State compunaut_octoprint
+        group: Saltstack
+        name: Run Salt
+        nodeStep: 'true'
+        nodefilters:
+          dispatch:
+            nodeIntersect: true
     - description: Restart the octoprint service
       jobref:
         group: Octoprint
