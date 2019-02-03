@@ -34,6 +34,8 @@
       exec: sudo salt-key -a "${option.node_to_commission}" -y
     - description: Wait 60 seconds, and test ping the new minions
       exec: sleep 60 && sudo salt "${option.node_to_commission}" test.ping
+    - description: Update raspbian repo
+      exec: sudo salt "${option.node_to_commission}" state.apply compunaut_octoprint.repo --state_output=mixed -b8 --batch-wait 15 && sleep 10
     - description: Apply compunaut_salt on printers
       exec: sudo salt "${option.node_to_commission}" state.apply compunaut_salt --state_output=mixed -b8 --batch-wait 15 && sleep 10
     - description: Wait 60 seconds, and test ping the new minions

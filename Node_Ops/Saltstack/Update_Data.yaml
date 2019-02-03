@@ -36,5 +36,5 @@
       exec: sudo salt -C '${option.salt_target}' pillar.items -b6 --batch-wait 15 1>/dev/null && sleep 10
     keepgoing: false
     strategy: node-first
-  timeout: '300'
+  timeout: '900'
 
