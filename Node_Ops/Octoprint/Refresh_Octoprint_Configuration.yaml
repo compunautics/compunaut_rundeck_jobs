@@ -1,0 +1,35 @@
+- defaultTab: monitor
+  description: |-
+    Use this job to refresh the Octoprint configuration.
+    - Keep in mind that this will restart Octoprint on the node and will interrupt any prints in progress.
+  executionEnabled: true
+  group: Octoprint
+  loglevel: INFO
+  name: Refresh Octoprint Configuration
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '8'
+    filter: 'name: .*prtr.*'
+  nodesSelectedByDefault: false
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Delete the old config file
+      exec: sudo rm -fv /opt/octoprint/.octoprint/config.yaml
+    - description: Restart the octoprint service
+      jobref:
+        group: Octoprint
+        name: Restart Octoprint
+        nodeStep: 'true'
+        nodefilters:
+          dispatch:
+            nodeIntersect: true
+    keepgoing: false
+    strategy: node-first
+  timeout: '300'
+
