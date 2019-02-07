@@ -66,8 +66,8 @@
         group: Saltstack
         name: Update Data
         nodeStep: 'true'
-    - description: Apply compunaut_haproxy on proxy servers
-      exec: sleep 60 && sudo salt '*proxy*' state.apply compunaut_haproxy --state_output=mixed -b6 --batch-wait 15 && sleep 10
+    - description: Apply compunaut_haproxy and compunaut_mission_control.site on proxy servers
+      exec: sleep 60 && sudo salt '*proxy*' state.apply compunaut_haproxy,compunaut_mission_control.site --state_output=mixed -b6 --batch-wait 15 && sleep 10
     - description: Deploy rundeck keys
       exec: sudo salt "${option.node_to_commission}" state.apply compunaut_rundeck.public --state_output=mixed -b6 --batch-wait 15
     keepgoing: false
