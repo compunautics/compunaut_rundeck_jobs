@@ -8,7 +8,7 @@
   group: Workflow
   loglevel: INFO
   multipleExecutions: true
-  name: 01 Upload Gcode Files
+  name: 01 Upload Gcode Files to Rundeck
   nodeFilterEditable: false
   nodefilters:
     dispatch:

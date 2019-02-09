@@ -4,7 +4,7 @@
   group: Workflow
   loglevel: INFO
   multipleExecutions: true
-  name: 02 Delete Gcode Files
+  name: 02 Delete Gcode Files from Rundeck
   nodeFilterEditable: false
   nodefilters:
     dispatch:
