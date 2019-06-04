@@ -18,7 +18,7 @@
   sequence:
     commands:
     - description: Update Software
-      exec: sudo apt-get update && sudo apt-get -o Dpkg::Options::='--force-confold' --force-yes -fuy dist-upgrade && apt autoremove -y
+      exec: sudo apt-get update && sudo apt-get -o Dpkg::Options::='--force-confold' --force-yes -fuy dist-upgrade && sudo apt autoremove -y
     keepgoing: false
     strategy: node-first
   timeout: '6000'
