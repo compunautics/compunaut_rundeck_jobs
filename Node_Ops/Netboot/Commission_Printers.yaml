@@ -1,0 +1,79 @@
+- defaultTab: monitor
+  description: Use this job to install printer software on netbooted raspberry pis.
+  executionEnabled: true
+  group: Netboot
+  loglevel: INFO
+  name: Commission Printers
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: .*salt.*'
+  nodesSelectedByDefault: true
+  options:
+  - description: |-
+      Set a salt target.
+      - If left blank, all pis will be targeted.
+    name: node_to_commission
+    regex: .*prtr.*
+    required: true
+    value: '*prtr*'
+  retry:
+    delay: 1m
+    retry: '1'
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Accept keys
+      exec: sudo salt-key -a "${option.node_to_commission}" -y
+    - description: Wait 60 seconds, and test ping the new minions
+      exec: sleep 60 && sudo salt "${option.node_to_commission}" test.ping
+    - description: Update raspbian repo
+      exec: sudo salt "${option.node_to_commission}" state.apply compunaut_octoprint.repo --state_output=mixed -b8 --batch-wait 15 && sleep 10
+    - description: Apply compunaut_salt on printers
+      exec: sudo salt "${option.node_to_commission}" state.apply compunaut_salt --state_output=mixed -b8 --batch-wait 15 && sleep 10
+    - description: Apply compunaut_default and compunaut_iptables on printers
+      exec: sudo salt "${option.node_to_commission}" state.apply compunaut_default,compunaut_iptables --state_output=mixed -b6 --batch-wait 15 && sleep 10
+    - description: Wait 60 seconds, and test ping the new minions
+      exec: sleep 60 && sudo salt "${option.node_to_commission}" test.ping
+    - description: Update Data
+      jobref:
+        args: -salt_target "*"
+        group: Saltstack
+        name: Update Data
+        nodeStep: 'true'
+    - description: Sync all salt modules
+      exec: sudo salt "${option.node_to_commission}" saltutil.sync_all -b6 --batch-wait 15 && sleep 10
+    - description: Generate PKI
+      exec: sudo salt-run state.orch orch.generate_pki --state-output=mixed && sleep 10
+    - description: Apply compunaut_dns and compunaut_consul on printers
+      exec: sudo salt "${option.node_to_commission}" state.apply compunaut_dns,compunaut_consul --state_output=mixed -b6 --batch-wait 15 && sleep 10
+    - description: Apply compunaut_sssd on printers
+      errorhandler:
+        exec: sleep 30 && sudo salt "${option.node_to_commission}" cmd.run 'systemctl start sssd' -b6 --batch-wait 15 && sleep 10
+        keepgoingOnSuccess: true
+      exec: sudo salt "${option.node_to_commission}" state.apply compunaut_sssd --state_output=mixed -b6 --batch-wait 15 && sleep 10
+    - description: Apply compunaut_octoprint on printers
+      exec: sudo salt "${option.node_to_commission}" state.apply compunaut_octoprint --state_output=mixed -b6 --batch-wait 15 && sleep 10
+    - description: Highstate the printers
+      exec: sudo salt "${option.node_to_commission}" state.highstate --state_output=mixed -b6 --batch-wait 15 && sleep 10
+    - description: Update Data
+      jobref:
+        args: -salt_target "*"
+        group: Saltstack
+        name: Update Data
+        nodeStep: 'true'
+    - description: Update Haproxy configuration
+      exec: sudo salt -I 'compunaut_haproxy:enabled:True' state.apply compunaut_haproxy --state_output=mixed && sleep 10
+    - description: Update DNS configuration
+      exec: sudo salt -I 'compunaut_dns:server:enabled:True' state.apply compunaut_dns --state_output=mixed && sleep 10
+    - description: Update Mission Control Dashboard
+      exec: sudo salt -I 'compunaut_mission_control:enabled:True' state.apply compunaut_mission_control.site --state_output=mixed && sleep 10
+    keepgoing: false
+    strategy: node-first
+  timeout: '3600'
+
