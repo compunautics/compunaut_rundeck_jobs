@@ -1,0 +1,29 @@
+- defaultTab: monitor
+  description: Use this job to update the dnsmasq servers, the haproxy configuration, and the mission control dashboard.
+  executionEnabled: true
+  group: Linux
+  loglevel: INFO
+  name: Update DNS, Proxy, and Dashboard
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: '1'
+    filter: 'name: .*salt.*'
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: Update Haproxy configuration
+      exec: sudo salt -I 'compunaut_haproxy:enabled:True' state.apply compunaut_haproxy --state_output=mixed && sleep 10
+    - description: Update DNS configuration
+      exec: sudo salt -I 'compunaut_dns:server:enabled:True' state.apply compunaut_dns --state_output=mixed && sleep 10
+    - description: Update Mission Control Dashboard
+      exec: sudo salt -I 'compunaut_mission_control:enabled:True' state.apply compunaut_mission_control.site --state_output=mixed && sleep 10
+    keepgoing: false
+    strategy: node-first
+  timeout: '300'
+

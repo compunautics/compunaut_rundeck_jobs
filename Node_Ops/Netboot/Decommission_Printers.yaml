@@ -45,14 +45,14 @@
         nodeStep: 'true'
     - description: Update Data
       jobref:
-        args: -salt_target "*vpn* or *proxy*"
         group: Saltstack
         name: Update Data
         nodeStep: 'true'
-    - description: Apply compunaut_haproxy on proxy servers
-      exec: sudo salt "*proxy*" state.apply compunaut_haproxy --state_output=mixed
-    - description: Apply compunaut_dnsmasq and openvpn.config on vpn servers
-      exec: sudo salt "*vpn*" state.apply compunaut_dnsmasq,openvpn.config --state_output=mixed
+    - description: Update DNS, Proxy, and Dashboard
+      jobref:
+        group: Linux
+        name: Update DNS, Proxy, and Dashboard
+        nodeStep: 'true'
     keepgoing: false
     strategy: node-first
   timeout: '300'
