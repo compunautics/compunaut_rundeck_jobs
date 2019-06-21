@@ -20,6 +20,12 @@
   sequence:
     commands:
     - description: Update saltstack data
+      errorhandler:
+        configuration:
+          command: echo "Continuing anyway..."
+        keepgoingOnSuccess: true
+        nodeStep: true
+        type: localexec
       exec: sudo salt-run state.orch orch.update_data --state-output=mixed
     keepgoing: false
     strategy: node-first
