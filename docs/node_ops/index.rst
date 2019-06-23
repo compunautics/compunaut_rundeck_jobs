@@ -2,7 +2,7 @@
 Node Ops Jobs
 *************
 
-.. toctree:
+.. toctree::
    :maxdepth: 2
 
    linux.rst
