@@ -115,6 +115,6 @@ The job works by referring to other jobs in the other folders.
 * Then it executes the `Decommission node from Consul <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/linux.html#decommission-node-from-consul>`_ job in the Linux folder, which removes the minions from Consul.
 * Then the `Decommission node from Influxdb <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/linux.html#decommission-node-from-influxdb>`_ job in the Linux folder is executed, which removes old monitoring data for the minion from influxdb.
 * Penultimately the 'Update Data' job from the Saltstack folder is executed to update mine, grain, and pillar information.
-* Lately, the `Update DNS, Proxy, and Dashboard <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/linux.html#update-dns-proxy-and-dashboard>` job from the Linux folder is executed to update haproxy, DNS, and the mission control dashboard.
+* Lately, the `Update DNS, Proxy, and Dashboard <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/linux.html#update-dns-proxy-and-dashboard>`_ job from the Linux folder is executed to update haproxy, DNS, and the mission control dashboard.
 
 This job will time out after 5 minutes if it has not completed its execution.
