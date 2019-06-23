@@ -13,7 +13,7 @@
 =======================================
 
 Rundeck is an operations focused automation platform developed by Rundeck. Detailed documentation on Rundeck 
-can be found at their documentation website `here <https://docs.rundeck.com/docs/>`.
+can be found at their documentation website `here <https://docs.rundeck.com/docs/>`_.
 
 For Compunaut, Rundeck is a relatively simple way to program command line tasks (jobs ) into a GUI interface 
 and then expose those tasks to floor technicians so that they may manage the platform or manage the printers.
