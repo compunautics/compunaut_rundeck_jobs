@@ -91,7 +91,7 @@ and mine data on the salt master. Then the job runs these commands.::
   sudo salt "${option.node_to_commission}" state.highstate --state_output=mixed -b6 --batch-wait 15 && sleep 10
 
 At this point, the job will then execute the 'Update Data' job from the SaltStack folder again, and will then
-Run the 'Update DNS, Proxy, and Dashboard' job within the Linux folder to ensure that the platform DNS, haproxy,
+Run the `Update DNS, Proxy, and Dashboard <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/linux.html#update-dns-proxy-and-dashboard>`_ job within the Linux folder to ensure that the platform DNS, haproxy,
 and Mission Control dashboard are all updated.
 
 In general, this job can take up to 40-60 minutes to run for a single printer. Many of the steps handle multiple
@@ -112,9 +112,9 @@ the image from Piserver via Guacamole if the pi's hostname will never be used ag
 The job works by referring to other jobs in the other folders. 
 
 * The job executes the 'Delete Keys' job in the Saltstack folder, which removes the minions from saltstack.
-* Then it executes the 'Decommission node from Consul' job in the Linux folder, which removes the minions from Consul.
-* Then the 'Decommission node from Influxdb' job in the Linux folder is executed, which removes old monitoring data for the minion from influxdb.
+* Then it executes the `Decommission node from Consul <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/linux.html#decommission-node-from-consul>`_ job in the Linux folder, which removes the minions from Consul.
+* Then the `Decommission node from Influxdb <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/linux.html#decommission-node-from-influxdb>`_ job in the Linux folder is executed, which removes old monitoring data for the minion from influxdb.
 * Penultimately the 'Update Data' job from the Saltstack folder is executed to update mine, grain, and pillar information.
-* Lately, the 'Update DNS, Proxy, and Dashboard' job from the Linux folder is executed to update haproxy, DNS, and the mission control dashboard.
+* Lately, the `Update DNS, Proxy, and Dashboard <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/linux.html#update-dns-proxy-and-dashboard>` job from the Linux folder is executed to update haproxy, DNS, and the mission control dashboard.
 
 This job will time out after 5 minutes if it has not completed its execution.

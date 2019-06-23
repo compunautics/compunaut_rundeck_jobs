@@ -21,8 +21,8 @@ script:
 
 The job will timeout after 5 minutes if it has not completed its execution.
 
-This job is used as part of the 'Decommission Printers' job in the 'Netboot' folder, but that does not
-mean that it cannot be used for other nodes that are being decommissioned as well.
+This job is used as part of the `Decommission Printers <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/netboot.html#decommission-printers>`_ job in the Netboot folder, but that does notmean that it cannot be used for 
+other nodes that are being decommissioned as well.
 
 Decommission node from Influxdb
 -------------------------------
@@ -40,8 +40,8 @@ It then restarts the influxdb service on that node.
 
 The job will timeout after 5 minutes if it has not completed its execution.
 
-This job is used as part of the 'Decommission Printers' job in the 'Netboot' folder, but that does not
-mean that it cannot be used for other nodes that are being decommissioned as well.
+This job is used as part of the `Decommission Printers <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/netboot.html#decommission-printers>`_ job in the Netboot folder, but that does not mean that it cannot be used 
+for other nodes that are being decommissioned as well.
 
 Update DNS, Proxy, and Dashboard
 --------------------------------
@@ -59,8 +59,7 @@ commands in sequence.::
 
 The job will timeout after 5 minutes if it has not completed its execution.
 
-This job is used as part of the 'Commission Printers' job in the 'Netboot' folder, but it can be run at any 
-time for other purposes.
+This job is used as part of the `Commission Printers <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/netboot.html#commission-printers>`_ and `Decommission Printers <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/netboot.html#decommission-printers>`_ job in the Netboot folder, but it can be run at any time for other purposes.
 
 Update Software
 ---------------
