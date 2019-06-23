@@ -1,9 +1,6 @@
-********
-Node Ops
-********
-
+*****
 Linux
-=====
+*****
 
 These jobs are primarily focused on the linux operating system or on updates to system components 
 of the platform that are not directly related to the other folders in this project.

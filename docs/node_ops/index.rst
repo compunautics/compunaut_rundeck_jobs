@@ -1,7 +1,3 @@
-*************
-Node Ops Jobs
-*************
-
 .. toctree::
    :maxdepth: 2
 
