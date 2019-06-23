@@ -2,10 +2,10 @@
 Compunaut Fleet Controller
 **************************
 
-Rundeck Job Documentation
-=========================
+|compunaut_pic| Rundeck Job Documentation |rundeck_pic|
+=======================================================
 
-.. image :: images/compunaut-logo.png
+.. |compunaut_pic| image :: images/compunaut-logo.png
    :alt: Compunaut Logo
-.. image :: images/rundeck-logo.png
+.. |rundeck_pic| image :: images/rundeck-logo.png
    :alt: Rundeck Logo
