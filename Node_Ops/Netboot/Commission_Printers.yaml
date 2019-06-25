@@ -89,7 +89,7 @@
       exec: sudo salt "${option.node_to_commission}" state.apply compunaut_dns,compunaut_consul --state_output=mixed -b6 --batch-wait 15 && sleep 10
     - description: Apply compunaut_sssd on printers
       errorhandler:
-        exec: sleep 30 && sudo salt "${option.node_to_commission}" cmd.run "systemctl restart sssd" -b6 --batch-wait 15 && sleep 10
+        exec: sleep 30 && sudo salt "${option.node_to_commission}" state.apply compunaut_sssd --state_output=mixed -b6 --batch-wait 15 && sleep 10
         keepgoingOnSuccess: true
       exec: sudo salt "${option.node_to_commission}" state.apply compunaut_sssd --state_output=mixed -b6 --batch-wait 15 && sleep 10
     - description: Apply compunaut_octoprint on printers
