@@ -15,7 +15,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '8'
-    filter: 'name: .*prtr.*'
+    filter: 'tags: octoprint_printer'
   nodesSelectedByDefault: false
   options:
   - description: The octoprint API key. **DO NOT CHANGE THIS VALUE**

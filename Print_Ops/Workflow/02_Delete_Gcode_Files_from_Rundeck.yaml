@@ -13,7 +13,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '2'
-    filter: 'name: (localhost|.*rundeck.*)'
+    filter: 'tags: rundeck_server'
   nodesSelectedByDefault: true
   options:
   - description: |-
