@@ -14,7 +14,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '3'
-    filter: 'name: .*consul.*'
+    filter: 'tags: consul_server'
   nodesSelectedByDefault: true
   options:
   - delimiter: ' '

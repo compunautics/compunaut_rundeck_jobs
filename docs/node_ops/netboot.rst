@@ -16,8 +16,8 @@ flow and should be executed first when adding new printers.
 In order to execute this job, you must have first logged into Guacamole and installed the default compunaut-raspi.tar.xz
 into Piserver. Else, you will receive an error if you attempt to run this job without that first being installed.
 
-This job works by taking a list of image names arbitrarily defined by the admin, targeting the node with 'netboot' in the 
-hostname, logging in as the 'rundeck-svc' user, and then executing these scripts.
+This job works by taking a list of image names arbitrarily defined by the admin, targeting the node with the 'piserver_server' tag, 
+logging in as the 'rundeck-svc' user, and then executing these scripts.
 
 .. note::
    The image names absolutely MUST include 'prtr' somewhere in the name in order for this and other jobs to work correctly.
@@ -44,8 +44,8 @@ Compunaut platform. This is the second job in the Netboot flow.
    'prtr' in their names somewhere. Please make sure to select your image names carefully, as they will become identifiers
    for your printer throughout the entire system.
 
-The job works by specifying a salt target of '\*prtr\*' (or node_to_commission), logging into the salt master 
-node as the 'rundeck-svc' user, and then running these commands in sequence.::
+The job works by specifying a salt target of '\*prtr\*' (or node_to_commission), targeting the salt node via the 'salt_master' tag, 
+logging in as the 'rundeck-svc' user, and then running these commands in sequence.::
 
    # First, accept the new printer's as valid minions for the master
    sudo salt-key -a "${option.node_to_commission}" -y

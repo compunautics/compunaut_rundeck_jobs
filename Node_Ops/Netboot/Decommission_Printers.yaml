@@ -12,7 +12,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: 'name: .*salt.*'
+    filter: 'tags: salt_master'
   nodesSelectedByDefault: true
   options:
   - delimiter: ' '

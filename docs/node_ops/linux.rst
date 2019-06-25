@@ -13,7 +13,7 @@ Decommission node from Consul
 This job deletes nodes from Consul, the service discovery and integration mesh that is part of the 
 Compunaut platform. 
 
-It works by targeting any node with 'consul' in its hostname. Using a list of hostnames given in the 
+It works by targeting any node with the 'consul_server' tag. Using a list of hostnames given in the 
 options, it logs into the node using the 'rundeck-svc' user and then executes the following BASH 
 script:
 
@@ -30,7 +30,7 @@ Decommission node from Influxdb
 This job deletes all entries involving a particular node from Influxdb, which is the metric storage
 database that is used by Grafana for time series monitoring. 
 
-It works by targeting any node with 'db' in the hostname. Using a list of hostnames given in the 
+It works by targeting any node with the 'influxdb_server' tag. Using a list of hostnames given in the 
 options, it logs into the node using the 'rundeck-svc' user and then executes the following BASH 
 script: 
 
@@ -50,7 +50,7 @@ This job is used to update the backend Haproxy and Dnsmasq services, as well as 
 panel site files. Typically, this is done whenever new printers are being added to the platform so that
 they will be accessible via hostname DNS resolution and via the mission control dashboard.
 
-This is done by targeting the salt master node as the 'rundeck-svc' user and then running these three salt 
+This is done by targeting the salt master node - via the 'salt_master' tag - as the 'rundeck-svc' user and then running these three salt 
 commands in sequence.::
 
    sudo salt -I 'compunaut_haproxy:enabled:True' state.apply compunaut_haproxy --state_output=mixed && sleep 10

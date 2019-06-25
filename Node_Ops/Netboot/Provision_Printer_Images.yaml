@@ -16,7 +16,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '1'
-    filter: 'name: .*netboot.*'
+    filter: 'tags: piserver_server'
   nodesSelectedByDefault: false
   options:
   - delimiter: ' '

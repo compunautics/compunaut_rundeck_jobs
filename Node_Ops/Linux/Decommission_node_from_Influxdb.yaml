@@ -14,7 +14,7 @@
       rankOrder: ascending
       successOnEmptyNodeFilter: false
       threadcount: '3'
-    filter: 'name: .*db.*'
+    filter: 'tags: influxdb_server'
   nodesSelectedByDefault: true
   options:
   - delimiter: ' '
