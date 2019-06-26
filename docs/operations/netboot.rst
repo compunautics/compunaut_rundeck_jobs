@@ -49,23 +49,18 @@ How to Pre-commission the Default Printer Image
 #. On the salt master node, run `watch -n1 salt-key -L` and wait for 'raspberrypi' to appear in the "Unaccepted Keys" list. 
    When it does, execute the following commands as root on the salt master node in sequence to pre-commission the default image.::
 
-   # Accept the salt minion
-   salt-key -A -y
-
-   # This command will let you know when the new salt minion is available to run commands
-   /srv/bootstrap/compunaut_minion_wait.sh
-
-   # Configure the salt minion
-   salt '*raspberrypi*' state.apply compunaut_salt
-
-   # The salt minion restarts in the prior command, so wait for it to become available again
-   /srv/bootstrap/compunaut_minion_wait.sh
-
-   # Sync all custom salt modules to the minion
-   salt '*raspberrypi*' saltutil.sync_all
-
-   # Apply these modules to the minion
-   salt '*raspberrypi*' state.apply compunaut_octoprint.repo,compunaut_default,compunaut_dns,compunaut_consul,compunaut_sssd,compunaut_telegraf,compunaut_chronyd,compunaut_iptables
+     # Accept the salt minion
+     salt-key -A -y
+     # This command will let you know when the new salt minion is available to run commands
+     /srv/bootstrap/compunaut_minion_wait.sh
+     # Configure the salt minion
+     salt '*raspberrypi*' state.apply compunaut_salt
+     # The salt minion restarts in the prior command, so wait for it to become available again
+     /srv/bootstrap/compunaut_minion_wait.sh
+     # Sync all custom salt modules to the minion
+     salt '*raspberrypi*' saltutil.sync_all
+     # Apply these modules to the minion
+     salt '*raspberrypi*' state.apply compunaut_octoprint.repo,compunaut_default,compunaut_dns,compunaut_consul,compunaut_sssd,compunaut_telegraf,compunaut_chronyd,compunaut_iptables
 
 #. The above steps should take around 30 to 45 minutes to complete with the default image. Once it is done, you may power off
    the Raspberry Pi that you have been using.
