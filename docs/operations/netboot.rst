@@ -69,7 +69,7 @@ to your system administrator to obtain access or to have them perform this proce
      salt '*raspberrypi*' saltutil.sync_all
 
      # Apply these modules to the minion
-     salt '*raspberrypi*' state.apply compunaut_octoprint.repo,compunaut_default,compunaut_dns,compunaut_sssd,compunaut_chronyd,compunaut_iptables
+     salt '*raspberrypi*' state.apply compunaut_octoprint.repo,compunaut_default,compunaut_dns,compunaut_sssd,compunaut_chronyd,compunaut_octoprint.motion.install,apache,compunaut_iptables
 
      # Install these packages to the minion
      salt '*raspberrypi*' cmd.run 'apt-get -o Dpkg::Options::='--force-confold' --force-yes -fuy install git python-pip virtualenv libsasl2-dev python-dev libldap2-dev libssl-dev cura-engine'
