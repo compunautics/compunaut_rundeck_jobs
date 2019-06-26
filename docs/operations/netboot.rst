@@ -79,4 +79,11 @@ to your system administrator to obtain access or to have them perform this proce
    minion from salt master's registry. Then run the "Decommission node from Consul" and "Decommission node from Influxdb" jobs,
    specifying 'raspberrypi' as the "node_to_remove," so that the default image is removed from all monitoring.
 
+     .. note::
+        There's a good chance that, since the raspberrypi image has default consul settings on it, you may need to run
+        the "Decommission node from Consul" and "Decommission node from Influxdb" jobs again after commissioning is completed.
+
+        Additionally, if it looks like the 'Wait for minions to respond' step in the 'Commission Printers' job is taking longer
+        than it should, make sure that the "raspberrypi" salt-key has been deleted.
+
 #. At this point, begin the normal Netboot Workflow as you otherwise would.
