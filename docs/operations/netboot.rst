@@ -51,14 +51,19 @@ How to Pre-commission the Default Printer Image
 
      # Accept the salt minion
      salt-key -A -y
+
      # This command will let you know when the new salt minion is available to run commands
      /srv/bootstrap/compunaut_minion_wait.sh
+
      # Configure the salt minion
      salt '*raspberrypi*' state.apply compunaut_salt
+
      # The salt minion restarts in the prior command, so wait for it to become available again
      /srv/bootstrap/compunaut_minion_wait.sh
+
      # Sync all custom salt modules to the minion
      salt '*raspberrypi*' saltutil.sync_all
+
      # Apply these modules to the minion
      salt '*raspberrypi*' state.apply compunaut_octoprint.repo,compunaut_default,compunaut_dns,compunaut_consul,compunaut_sssd,compunaut_telegraf,compunaut_chronyd,compunaut_iptables
 
