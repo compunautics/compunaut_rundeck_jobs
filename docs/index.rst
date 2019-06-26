@@ -56,6 +56,12 @@ To read more information on the jobs within this project, please link on the lin
 Operations
 ==========
 
+The previous sections discuss the jobs in technical detail. This section will describe the optimal operational
+workflow that engineers should use with Compunaut Fleet Controller.
+
+In some cases, the assumed workflow will be described. In others, protips based on testing and experience will be
+documented.
+
 .. toctree::
    :maxdepth: 2
 
