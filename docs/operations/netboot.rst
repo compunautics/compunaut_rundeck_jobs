@@ -34,6 +34,10 @@ image when provisioning new printer images via Rundeck. With this being done, it
 How to Pre-commission the Default Printer Image
 -----------------------------------------------
 
+To execute these steps, you will need access to Guacamole (for piserver), the Salt Master node, and Rundeck Node_Ops. 
+Please makes sure that you have access to each of these systems before proceeding. If you do not have access, then escalate
+to your system administrator to obtain access or to have them perform this procedure.
+
 #. Access Guacamole, and then load Piserver via the desktop icon. Ensure that compunaut-raspi is installed by selecting the
    'Software' tab. If it is not installed, then click on the "Add" button at the top of the menu, opt to "Install operating system
    from local file (.tar.xz), and then navigate to Desktop and select the image.
@@ -68,7 +72,8 @@ How to Pre-commission the Default Printer Image
      salt '*raspberrypi*' state.apply compunaut_octoprint.repo,compunaut_default,compunaut_dns,compunaut_consul,compunaut_sssd,compunaut_telegraf,compunaut_chronyd,compunaut_iptables
 
 #. The above steps should take around 30 to 45 minutes to complete with the default image. Once it is done, you may power off
-   the Raspberry Pi that you have been using.
+   the Raspberry Pi that you have been using, and you may click on the "Remove" button in Piserver to remove 'compunaut-raspi'
+   as a client from the MAC address that you loaded in step 2 and 3.
 
 #. Once the Pi is powered off, on the salt master node run :code:`salt-key -d raspberrypi -y` to delete the default image
    minion from salt master's registry. Then run the "Decommission node from Consul" and "Decommission node from Influxdb" jobs,
