@@ -71,6 +71,7 @@ How to Pre-commission the Default Printer Image
    the Raspberry Pi that you have been using.
 
 #. Once the Pi is powered off, on the salt master node run :code:`salt-key -d raspberrypi -y` to delete the default image
-   minion from salt master's registry.
+   minion from salt master's registry. Then run the "Decommission node from Consul" and "Decommission node from Influxdb" jobs,
+   specifying 'raspberrypi' as the "node_to_remove," so that the default image is removed from all monitoring.
 
 #. At this point, begin the normal Netboot Workflow as you otherwise would.
