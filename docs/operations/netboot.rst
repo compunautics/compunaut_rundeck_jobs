@@ -46,7 +46,7 @@ How to Pre-commission the Default Printer Image
 #. Quickly ensure that the MAC address is highlighted, and then click on "OK" in the lower right hand corner of the menu. Your
    Raspberry Pi should then start netbooting based on the default image.
 
-#. On the salt master node, run `watch -n1 salt-key -L` and wait for 'raspberrypi' to appear in the "Unaccepted Keys" list. 
+#. On the salt master node, run :code:`watch -n1 salt-key -L` and wait for 'raspberrypi' to appear in the "Unaccepted Keys" list. 
    When it does, execute the following commands as root on the salt master node in sequence to pre-commission the default image.::
 
      # Accept the salt minion
@@ -69,5 +69,8 @@ How to Pre-commission the Default Printer Image
 
 #. The above steps should take around 30 to 45 minutes to complete with the default image. Once it is done, you may power off
    the Raspberry Pi that you have been using.
+
+#. Once the Pi is powered off, on the salt master node run :code:`salt-key -d raspberrypi -y` to delete the default image
+   minion from salt master's registry.
 
 #. At this point, begin the normal Netboot Workflow as you otherwise would.
