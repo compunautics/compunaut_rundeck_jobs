@@ -25,11 +25,11 @@ and commission your fleet.
 
 #. Log into Guacamole, launch Piserver, and install the default compunaut-raspi.tar.xz image. Information on using Piserver can be found here: `https://www.raspberrypi.org/blog/piserver/ <The Raspberry Pi PiServer tool>`_ Refer to the section on "How to use PiServer."
 
-#. Use Rundeck to Provision images for each printer/raspberry pi pair in your fleet.
+#. Use Rundeck to `Provision images <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/netboot.html#provision-printer-images>`_ for each printer/raspberry pi pair in your fleet.
 
 #. Revert back to Guacamole, and - using Piserver - power on each of your Raspberry Pis one by one, assigning each to an image.
 
-#. After waiting for each Pi to boot, use Rundeck again to Commission your printers. Once commissioned, your printers will be ready for use!
+#. After waiting for each Pi to boot, use Rundeck again to `Commission your printers <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/netboot.html#commission-printers>`_. Once commissioned, your printers will be ready for use!
 
 This is just a high level overview. More details on this flow are given in `Netboot <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/netboot.html>`_ and in `Pre-commissioning the Default Printer Image <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/operations/netboot.html#how-to-pre-commission-the-default-printer-image>`_.
 
@@ -47,7 +47,7 @@ If you have any other type of Raspberry Pi, please refer to the guides below:
 
 * `Network boot your Raspberry Pi (a tutorial on how you can network boot on your own for fun) <https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/net_tutorial.md>`_
 
-* `Bare Metal Raspberry Pi 3B+: Network Boot (a third party guide that explains much of the same things above) <https://metebalci.com/blog/bare-metal-rpi3-network-boot/>`
+* `Bare Metal Raspberry Pi 3B+: Network Boot (a third party guide that explains much of the same things above) <https://metebalci.com/blog/bare-metal-rpi3-network-boot/>`_
 
 Pre-commissioning the Default Printer Image
 ===========================================
