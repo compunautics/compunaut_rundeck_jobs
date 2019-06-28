@@ -105,10 +105,10 @@ to your system administrator to obtain access or to have them perform this proce
      salt '*raspberrypi*' saltutil.sync_all
 
      # Apply these modules to the minion
-     salt '*raspberrypi*' state.apply compunaut_octoprint.repo,compunaut_default,compunaut_dns,compunaut_sssd,compunaut_chronyd,compunaut_octoprint.motion.install,apache,compunaut_iptables
+     salt '*raspberrypi*' state.apply compunaut_octoprint.repo,compunaut_default,compunaut_dns,compunaut_sssd,compunaut_chronyd,apache,compunaut_iptables
 
      # Install these packages to the minion
-     salt '*raspberrypi*' cmd.run 'apt-get -o Dpkg::Options::='--force-confold' --force-yes -fuy install git python-pip virtualenv libsasl2-dev python-dev libldap2-dev libssl-dev cura-engine'
+     salt '*raspberrypi*' cmd.run 'apt-get -o Dpkg::Options::='--force-confold' --force-yes -fuy install git python-pip virtualenv libsasl2-dev python-dev libldap2-dev libssl-dev cura-engine motion'
 
 #. The above steps should take around 30 to 45 minutes to complete with the default image. Once it is done, you may power off
    the Raspberry Pi that you have been using, and you may click on the "Remove" button in Piserver to remove 'compunaut-raspi'
