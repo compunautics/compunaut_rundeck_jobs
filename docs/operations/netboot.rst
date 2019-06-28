@@ -2,7 +2,15 @@
 Netboot Operations Guide
 ************************
 
-The Netboot workflow commissions and sets up your printer fleet. Once your printers are commissioned within Compunaut,
+A key workflow in Compunaut is to install Raspberry Pis as controllers for the individual printers that make up the fleet.
+Raspberry Pis are inexpensive, easy to handle, and remarkably capable machines, but managing a large fleet of dozens of them can
+be a chore, especially when you have to have to manage unreliable SD cards.
+
+Thankfully, Raspberry Pis support network boot, which allows you to boot them with no local storage. Their operating systems
+and other installed configurations are stored remotely, where they can be easily copied, deleted, and transferred. In a sense,
+managing your printer fleet becomes like managing computers in a cloud.
+
+The Netboot workflow accomplishes this and commissions your printer fleet. Once your printers are commissioned within Compunaut,
 you will be able to execute print jobs against them with Rundeck, manage access to them, and monitor them with Consul and
 Grafana.
 
@@ -12,8 +20,34 @@ to the Netboot suite of jobs.
 High Level Overview of the Netboot Workflow
 ===========================================
 
+When the Compunaut Fleet Controller platform is first installed, you will need to do the following things to set up Netboot
+and commission your fleet.
+
+#. Log into Guacamole, launch Piserver, and install the default compunaut-raspi.tar.xz image. Information on using Piserver can be found here: `https://www.raspberrypi.org/blog/piserver/ <The Raspberry Pi PiServer tool>`_ Refer to the section on "How to use PiServer."
+
+#. Use Rundeck to Provision images for each printer/raspberry pi pair in your fleet.
+
+#. Revert back to Guacamole, and - using Piserver - power on each of your Raspberry Pis one by one, assigning each to an image.
+
+#. After waiting for each Pi to boot, use Rundeck again to Commission your printers. Once commissioned, your printers will be ready for use!
+
+This is just a high level overview. More details on this flow are given in `Netboot <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/netboot.html>`_ and in `Pre-commissioning the Default Printer Image <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/operations/netboot.html#how-to-pre-commission-the-default-printer-image>`_.
+
 Enabling Netboot Functionality with your Raspberry Pi
 =====================================================
+
+Not all Raspberry Pis support network booting. In general, you will want to use Raspberry Pi 3b+ units only with Compunaut Fleet
+Controller. These units do not require any pre-configuration to enable network booting and should work with Compunaut out of the box.
+
+If you have any other type of Raspberry Pi, please refer to the guides below:
+
+* `Pi 3 booting part II: Ethernet (which Pis will support network booting) <https://www.raspberrypi.org/blog/pi-3-booting-part-ii-ethernet-all-the-awesome/>`_
+
+* `Network Booting (more technical information on how network boot with Pis work) <https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/net.md>`_
+
+* `Network boot your Raspberry Pi (a tutorial on how you can network boot on your own for fun) <https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/net_tutorial.md>`_
+
+* `Bare Metal Raspberry Pi 3B+: Network Boot (a third party guide that explains much of the same things above) <https://metebalci.com/blog/bare-metal-rpi3-network-boot/>`
 
 Pre-commissioning the Default Printer Image
 ===========================================
@@ -57,12 +91,14 @@ to your system administrator to obtain access or to have them perform this proce
      salt-key -A -y
 
      # This command will let you know when the new salt minion is available to run commands
+     ## Even if this command succeeds, you may still need to wait a minute before the minion accepts states
      /srv/bootstrap/compunaut_minion_wait.sh
 
      # Configure the salt minion
      salt '*raspberrypi*' state.apply compunaut_salt
 
      # The salt minion restarts in the prior command, so wait for it to become available again
+     ## Even if this command succeeds, you may still need to wait a minute before the minion accepts states
      /srv/bootstrap/compunaut_minion_wait.sh
 
      # Sync all custom salt modules to the minion

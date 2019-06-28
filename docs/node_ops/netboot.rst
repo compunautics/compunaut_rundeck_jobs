@@ -14,7 +14,9 @@ This job will create raspberry pi images in Piserver on the netboot server. This
 flow and should be executed first when adding new printers.
 
 In order to execute this job, you must have first logged into Guacamole and installed the default compunaut-raspi.tar.xz
-into Piserver. Else, you will receive an error if you attempt to run this job without that first being installed.
+into Piserver. Else, you will receive an error if you attempt to run this job without that first being installed. 
+Information on using Piserver can be found here: `https://www.raspberrypi.org/blog/piserver/ <The Raspberry Pi PiServer tool>`_
+Refer to the section on "How to use PiServer."
 
 This job works by taking a list of image names arbitrarily defined by the admin, targeting the node with the 'piserver_server' tag, 
 logging in as the 'rundeck-svc' user, and then executing these scripts.
