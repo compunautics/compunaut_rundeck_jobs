@@ -41,13 +41,13 @@ Controller. These units do not require any pre-configuration to enable network b
 
 If you have any other type of Raspberry Pi, or if you are just curious about Pis and netbooting, please refer to the guides below:
 
-* `Pi 3 booting part II: Ethernet (which Pis will support network booting) <https://www.raspberrypi.org/blog/pi-3-booting-part-ii-ethernet-all-the-awesome/>`_
+* `Pi 3 booting part II: Ethernet <https://www.raspberrypi.org/blog/pi-3-booting-part-ii-ethernet-all-the-awesome/>`_ (which Pis will support network booting)
 
-* `Network Booting (more technical information on how network boot with Pis work) <https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/net.md>`_
+* `Network Booting <https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/net.md>`_ (more technical information on how network boot with Pis work)
 
-* `Network boot your Raspberry Pi (a tutorial on how you can network boot on your own for fun) <https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/net_tutorial.md>`_
+* `Network boot your Raspberry Pi <https://www.raspberrypi.org/documentation/hardware/raspberrypi/bootmodes/net_tutorial.md>`_ (a tutorial on how you can network boot on your own for fun)
 
-* `Bare Metal Raspberry Pi 3B+: Network Boot (a third party guide that explains much of the same things above) <https://metebalci.com/blog/bare-metal-rpi3-network-boot/>`_
+* `Bare Metal Raspberry Pi 3B+: Network Boot <https://metebalci.com/blog/bare-metal-rpi3-network-boot/>`_ (a third party guide that explains much of the same things above)
 
 Pre-commissioning the Default Printer Image
 ===========================================
