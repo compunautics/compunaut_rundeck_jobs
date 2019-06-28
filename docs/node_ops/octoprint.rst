@@ -44,7 +44,7 @@ The admin can select any node that has the 'octoprint_printer' tag to run this o
 
 .. literalinclude:: scripts/promote_user_to_admin.sh
 
-Once these commands/scripts have been run, Rundeck will restart Octoprint by executing the '`Restart Octoprint <>`_' job so that the 
+Once these commands/scripts have been run, Rundeck will restart Octoprint by executing the '`Restart Octoprint <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/octoprint.html#restart-octoprint>`_' job so that the 
 changes will take effect in Octoprint.
 
 Refresh Octoprint Configuration
@@ -54,8 +54,8 @@ Saltstack does not automatically update the Octoprint configuration when it is c
 do not want Octoprint to be inadvertently restarted without manual admin attention. This job accomplishes this. 
 
 It targets nodes with the 'octoprint_printer' tag, logs into them via the 'rundeck-svc' user, deletes the 
-/opt/octoprint/.octoprint/config.yaml file, and then executes the '`Run Salt <>`_' job - which applies the
-compunaut_octoprint state on the raspberry pi - and the '`Restart Octoprint <>`_' job so that the new config takes effect.
+/opt/octoprint/.octoprint/config.yaml file, and then executes the '`Run Salt <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/saltstack.html#run-salt>`_' job - which applies the
+compunaut_octoprint state on the raspberry pi - and the '`Restart Octoprint <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/node_ops/octoprint.html#restart-octoprint>`_' job so that the new config takes effect.
 
 Restart Octoprint
 -----------------
