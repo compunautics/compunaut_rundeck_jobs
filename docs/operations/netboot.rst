@@ -39,7 +39,7 @@ Enabling Netboot Functionality with your Raspberry Pi
 Not all Raspberry Pis support network booting. In general, you will want to use Raspberry Pi 3b+ units only with Compunaut Fleet
 Controller. These units do not require any pre-configuration to enable network booting and should work with Compunaut out of the box.
 
-If you have any other type of Raspberry Pi, please refer to the guides below:
+If you have any other type of Raspberry Pi, or if you are just curious about Pis and netbooting, please refer to the guides below:
 
 * `Pi 3 booting part II: Ethernet (which Pis will support network booting) <https://www.raspberrypi.org/blog/pi-3-booting-part-ii-ethernet-all-the-awesome/>`_
 
