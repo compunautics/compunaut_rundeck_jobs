@@ -57,14 +57,16 @@ printer with a Raspberry Pi 3B+ can take about an hour (and for every 6 addition
 increases by another hour).
 
 To try and cut this time down for your printer fleet, you can optionally pre-commission the default compunaut-raspi printer image.
-This could cut the time to commission a batch of six printers down from ~1 hour to around 30 minutes.
 
 Why would this be necessary? The compunaut-raspi image comes with nothing installed on it except for a salt-minion. It's set up 
 this way to ensure the cleanest state after the platform is installed, before engineers being working with the system. 
 Unfortunately, this means that much more work has to be done to install each individual printer image.
 
 Pre-commissioning the default image will install most of the generic software on that image. You can then use this pre-commissioned
-image when provisioning new printer images via Rundeck. With this being done, it will take much less time to commission printers.
+image when provisioning new printer images via Rundeck.
+
+This process can take up to 45 minutes, but it can cut the time to commission a batch of six printers down from ~1 hour to 
+around 30 minutes. This pays huge time saving dividends when commissioning a large printer fleet of many dozens of printers.
 
 How to Pre-commission the Default Printer Image
 -----------------------------------------------
