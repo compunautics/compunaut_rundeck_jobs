@@ -65,7 +65,7 @@ Unfortunately, this means that much more work has to be done to install each ind
 Pre-commissioning the default image will install most of the generic software on that image. You can then use this pre-commissioned
 image when provisioning new printer images via Rundeck.
 
-This process can take up to 45 minutes, but it can cut the time to commission a batch of six printers down from ~1 hour to 
+This process can take up to 30 minutes to complete, but it can cut the time to commission a batch of six printers down from ~1 hour to
 around 30 minutes. This pays huge time saving dividends when commissioning a large printer fleet of many dozens of printers.
 
 How to Pre-commission the Default Printer Image
@@ -113,7 +113,7 @@ to your system administrator to obtain access or to have them perform this proce
      # Install these packages to the minion
      salt '*raspberrypi*' cmd.run 'apt-get -o Dpkg::Options::='--force-confold' --force-yes -fuy install git python-pip virtualenv libsasl2-dev python-dev libldap2-dev libssl-dev cura-engine motion'
 
-#. The above steps should take around 30 to 45 minutes to complete with the default image. Once it is done, you may power off
+#. The above steps should take around 20 to 30 minutes to complete with the default image. Once it is done, you may power off
    the Raspberry Pi that you have been using, and you may click on the "Remove" button in Piserver to remove 'compunaut-raspi'
    as a client from the MAC address that you loaded in step 2 and 3.
 
