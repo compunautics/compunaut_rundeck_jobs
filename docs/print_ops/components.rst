@@ -59,16 +59,14 @@ no existing registrations will be overwritten by accident.
 
 Once the new registration is created, the job will reload consul so that the new registration will take effect.
 
-This job is used in the Workflow `03 Exchange Filament<>`_ and `06 Issue Print Order by Printer<>`_ jobs, and it will timeout after 
-5 minutes.
+This job is used in the Workflow `03 Exchange Filament <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/print_ops/workflow.html#exchange-filament>`_ and `06 Issue Print Order by Printer <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/print_ops/workflow.html#issue-print-order-by-printer>`_ jobs, and it will timeout after 5 minutes.
 
 De-register Filament
 --------------------
 
 This job deletes an existing filament registration. This is often the prelude to exchanging the filament for something else. 
 
-Compared to the `Register Filament<>`_ job, this one is markedly simpler. It allows the technician to target any node with the 
-'octoprint_printer' tag, and then runs these commands as the 'rundeck-svc' user in sequence.::
+Compared to the `Register Filament <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/print_ops/components.html#register-filament>`_ job, this one is markedly simpler. It allows the technician to target any node with the 'octoprint_printer' tag, and then runs these commands as the 'rundeck-svc' user in sequence.::
 
    # delete any filament registration that exists
    sudo rm -fv /etc/consul.d/{filament.json,filament_bool}
@@ -76,8 +74,7 @@ Compared to the `Register Filament<>`_ job, this one is markedly simpler. It all
    # reload consul so that it takes effect
    sudo systemctl reload consul
 
-This job is used in the Workflow `03 Exchange Filament<>`_ and `06 Issue Print Order by Printer<>`_ jobs, and will timeout after
-5 minutes.
+This job is used in the Workflow `03 Exchange Filament <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/print_ops/workflow.html#exchange-filament>`_ and `06 Issue Print Order by Printer <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/print_ops/workflow.html#issue-print-order-by-printer>`_ jobs, and will timeout after 5 minutes.
 
 Mark Filament Available
 -----------------------
@@ -86,15 +83,14 @@ Just because a filament has been registered does not mean that the printer is re
 technician to complete preparations - or clean a finished print - the concept of "filament availability" is present in Compunaut 
 as well.
 
-Recall the 'print bool' from the `Register Filament<>`_ job. This is how a filament is marked available and unavailable. In this job, 
-the bool is changed to mark the filament available and open the printer up to receiving new print orders.
+Recall the 'print bool' from the `Register Filament <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/print_ops/components.html#register-filament>`_ job. This is how a filament is marked available and unavailable. In this job the bool is changed to mark the filament available and open the printer up to receiving new print orders.
 
 It works by allowing the technician to target any node with the 'octoprint_printer' tag, logs in as the 'rundeck-svc' user, and then
 executes the script below.
 
 .. literalinclude:: scripts/make_available.py
 
-This job is used as part of the Workflow `04 Mark Filament Available<>`_ job, and it will timeout after 5 minutes.
+This job is used as part of the Workflow `04 Mark Filament Available <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/print_ops/workflow.html#mark-filament-available>`_ job, and it will timeout after 5 minutes.
 
 Mark Filament Unavailable
 -------------------------
@@ -109,9 +105,8 @@ This job accomplishes this task. The technician targets any node with the 'octop
 
 .. literalinclude:: scripts/make_unavailable.py
 
-This job is used as part of the Workflow `05 Issue Print Order by Filament<>`_ job. It is not present in the 
-`06 Issue Print Order by Printer<>`_ job because, even though a filament is registered in that job, it is marked unavailable by
-default.
+This job is used as part of the Workflow `05 Issue Print Order by Filament <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/print_ops/workflow.html#issue-print-order-by-filament>`_ job. It is not present in the 
+`06 Issue Print Order by Printer <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/print_ops/workflow.html#issue-print-order-by-printer>`_ job because, even though a filament is registered in that job, it is marked unavailable by default.
 
 This job will timeout after 5 minutes.
 
@@ -128,13 +123,13 @@ This job heats the print head and the bed to the settings input by the technicia
 the 'octoprint_printer' tag.
 
 Rundeck will access the node using the 'rundeck-svc' user, and will then execute these two scripts in sequence. The scripts issue
-commands to `Octoprint's REST API<http://docs.octoprint.org/en/master/api/printer.html>`_.
+commands to `Octoprint's REST API <http://docs.octoprint.org/en/master/api/printer.html>`_.
 
 .. literalinclude:: scripts/heat_the_print_head.py
 
 .. literalinclude:: scripts/heat_the_print_bed.py
 
-This job is used as part of the Workflow `03 Exchange Filament<>`_ job, and it will timeout after 5 minutes.
+This job is used as part of the Workflow `03 Exchange Filament <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/print_ops/workflow.html#exchange-filament>`_ job, and it will timeout after 5 minutes.
 
 Cool Printer
 ------------
@@ -142,7 +137,7 @@ Cool Printer
 This job will cool the printer to a resting state. The technician can select any node that has the 'octoprint_printer' tag. 
 
 Rundeck will access the node using the 'rundeck-svc' user, and will then execute these two scripts in sequence. As before, the
-scripts issue commands to `Octoprint's REST API<http://docs.octoprint.org/en/master/api/printer.html>`_.
+scripts issue commands to `Octoprint's REST API <http://docs.octoprint.org/en/master/api/printer.html>`_.
 
 .. literalinclude:: scripts/cool_the_print_head.py
 
@@ -166,23 +161,21 @@ This job will elevate the printer to a position that is generally in the middle 
 of any desktop grade printer, where maintenance or filament exchange can take place more easily.
 
 The technician may select any node that has the 'octoprint_printer' tag, after which Rundeck will first execute the 
-`Home Printer<>`_ Component job to make sure that the print head starts from a known position. Then, Rundeck will access the node 
-with the 'rundeck-svc' user and execute the script below. The script issues commands to 
-`Octoprint's REST API<http://docs.octoprint.org/en/master/api/printer.html#issue-a-print-head-command>`_.
+`Home Printer <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/print_ops/components.html#home-printer>`_ Component job to make sure that the print head starts from a known position. Then, Rundeck will access the node with the 'rundeck-svc' user and execute the script below. The script issues commands to 
+`Octoprint's REST API <http://docs.octoprint.org/en/master/api/printer.html#issue-a-print-head-command>`_.
 
 .. literalinclude:: scripts/elevate_the_printer.py
 
-This job is used as part of the Workflow `03 Exchange Filament<>`_ job, and it will timeout after 5 minutes.
+This job is used as part of the Workflow `03 Exchange Filament <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/print_ops/workflow.html#exchange-filament>`_ job, and it will timeout after 5 minutes.
 
 Home Printer
 ------------
 
 This job will home the printer, which is a predesignated known position that is often used as a starting point for all print jobs.
-In Compunaut, this job is actually used by another Component job, `Elevate Printer<>`_, to ensure that the print head does not try
-to go outside of the bounds of the print area - which could potentially damage the printer.
+In Compunaut, this job is actually used by another Component job, `Elevate Printer <https://compunaut-rundeck-jobs.readthedocs.io/en/latest/print_ops/components.html#elevate-printer>`_, to ensure that the print head does not try to go outside of the bounds of the print area - which could potentially damage the printer.
 
 The job works by allowing the technician to select any node that has the 'octoprint_printer' tag. Rundeck will then log into the node
 via the 'rundeck-svc' user and execute the following script. As before, the script issues commands to 
-`Octoprint's REST API<http://docs.octoprint.org/en/master/api/printer.html#issue-a-print-head-command>`_.
+`Octoprint's REST API <http://docs.octoprint.org/en/master/api/printer.html#issue-a-print-head-command>`_.
 
 .. literalinclude:: scripts/home_the_printer.py
